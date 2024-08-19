@@ -10,7 +10,7 @@
 <strong>Compiling in windows</strong><br>
 <br>
 <strong>Required tools: </strong><br>
-<a href="http://ninslash.com/tools/bam-0.4.0.zip">Bam 0.4.0</a><br>
+<a href="https://github.com/teeworlds/bam/archive/refs/tags/v0.5.1.zip">Bam 0.5.1</a><br>
 <a href="https://www.python.org/downloads/">Python (tested with 3.7.0)</a><br>
 <a href="https://visualstudio.microsoft.com/vs/older-downloads/">Visual Studio Express 2010</a><br>
 <a href="https://visualstudio.microsoft.com/vs/older-downloads/">Visual Studio 2010 Service Pack 1</a><br>
