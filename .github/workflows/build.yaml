@@ -30,11 +30,13 @@ jobs:
         cd bam
         ./make_unix.sh
 
-    - name: Set up MSVC environment
+    - name: Set up MSYS2
       if: contains(matrix.os, 'windows')
-      uses: ilammy/msvc-dev-cmd@v1
+      uses: msys2/setup-msys2@v2
       with:
-        arch: x64
+        msys2-version: latest
+        update: true
+        install: base-devel mingw-w64-x86_64-toolchain
   
     - name: Prepare Windows
       if: contains(matrix.os, 'windows')
