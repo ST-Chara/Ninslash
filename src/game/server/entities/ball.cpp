@@ -2,6 +2,7 @@
 #include <engine/shared/config.h>
 #include <game/server/gamecontext.h>
 #include <game/mapitems.h>
+#include <game/generated/protocol.h>
 
 #include "ball.h"
 

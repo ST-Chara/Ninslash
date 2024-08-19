@@ -3,7 +3,6 @@
 
 #include <game/server/entity.h>
 #include <game/generated/server_data.h>
-#include <game/generated/protocol.h>
 
 #include <game/gamecore.h>
 
