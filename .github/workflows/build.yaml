@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-2019]
+        os: [ubuntu-latest, macOS-latest, windows-2022]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,7 +45,7 @@ jobs:
         ./make_win64_msvc.bat
 
     - name: Build in debug mode
-      run: ./bam/bam conf=debug all
+      run: ./bam/bam
 
     - name: Build in release mode
       run: ./bam/bam conf=release all
