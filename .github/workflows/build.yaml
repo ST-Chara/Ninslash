@@ -3,45 +3,6 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build-cmake:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest, ubuntu-20.04]
-        include:
-        - os: ubuntu-latest
-          cmake-args: -G Ninja
-          package-file: "*-linux_x86_64.tar.xz"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
-        - os: ubuntu-20.04
-          cmake-path: /usr/bin/
-          cmake-args: -G Ninja
-          package-file: "*-linux_x86_64.tar.xz"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
-        - os: macOS-latest
-          cmake-args: -G Ninja
-          package-file: "*-macos.dmg"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
-        - os: windows-latest
-          cmake-args: -A x64
-          package-file: "*-win64.zip"
-          env:
-            CFLAGS: /WX
-            CXXFLAGS: /WX
-            LDFLAGS: /WX
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-
   build-bam:
     runs-on: ${{ matrix.os }}
     strategy:
