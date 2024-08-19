@@ -128,7 +128,7 @@ if family == "windows" then
 			table.insert(icu_depends, CopyToDirectory(".", "other/icu/gcc/lib32/icuuc53.dll"))
 		end
 		table.insert(client_depends, CopyToDirectory(".", "other\\freetype\\windows\\lib32\\freetype.dll"))
-		table.insert(client_depends, CopyToDirectory(".", "other\\sdl\\windows\\lib32\\SDL.dll"))
+		table.insert(client_depends, CopyToDirectory(".", "other\\sdl2\\lib32\\SDL.dll"))
 		table.insert(client_depends, CopyToDirectory(".", "other\\glew\\windows\\lib32\\glew32.dll"))
 	else
 		if config.compiler.driver == "cl" then
@@ -141,7 +141,7 @@ if family == "windows" then
 			table.insert(icu_depends, CopyToDirectory(".", "other/icu/gcc/lib64/icuuc53.dll"))
 		end
 		table.insert(client_depends, CopyToDirectory(".", "other\\freetype\\windows\\lib64\\freetype.dll"))
-		table.insert(client_depends, CopyToDirectory(".", "other\\sdl\\windows\\lib64\\SDL.dll"))
+		table.insert(client_depends, CopyToDirectory(".", "other\\sdl2\\lib64\\SDL.dll"))
 		table.insert(client_depends, CopyToDirectory(".", "other\\glew\\windows\\lib64\\glew32.dll"))
 	end
 
