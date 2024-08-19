@@ -1,9 +1,3 @@
-
---[[@GROUP Configuration@END]]--
-
---[[@FUNCTION
-	TODO
-@END]]--
 function loadfile_(filename, env)
 	local file
 	if _VERSION == "Lua 5.1" then
@@ -17,6 +11,11 @@ function loadfile_(filename, env)
 	return file
 end
 
+--[[@GROUP Configuration@END]]--
+
+--[[@FUNCTION
+	TODO
+@END]]--
 function NewConfig(on_configured_callback)
 	local config = {}
 

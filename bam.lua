@@ -1,3 +1,8 @@
+if _VERSION == "Lua 5.1" then
+	CheckVersion("0.4")
+else
+	CheckVersion("0.5")
+end
 
 Import("configure.lua")
 Import("other/sdl2/sdl2.lua")
@@ -109,7 +114,7 @@ AddDependency(network_source, network_header)
 AddDependency(client_content_source, client_content_header)
 AddDependency(server_content_source, server_content_header)
 
-nethash = CHash("src/game/generated/nethash.cpp", "src/engine/shared/protocol.h", "src/game/generated/protocol.h", "src/game/tuning.h", "src/game/gamecore.cpp", network_header)
+nethash = CHash("src/game/generated/nethash.cpp", "src/engine/shared/protocol.h", "src/game/generated/protocol.h", "src/game/tuning.h", "src/game/gamecore.cpp")
 
 icu_depends = {}
 client_link_other = {}
@@ -166,22 +171,20 @@ function build(settings)
 	settings.cc.Output = Intermediate_Output
 
 	if config.compiler.driver == "cl" then
-		settings.cc.flags:Add("/wd4244")
-		settings.cc.flags:Add("/wd4503") -- warning C4503: decorated name length exceeded, name was truncated
-		settings.cc.flags:Add("/EHsc") -- warnings of std containers
+		settings.cc.flags:Add("/wd4244", "/wd4577")
 	else
-		settings.cc.flags:Add("-Wall", "-fno-exceptions", "-Werror=format")
+		settings.cc.flags:Add("-Wall", "-fno-exceptions")
 		if family == "windows" then
 			-- disable visibility attribute support for gcc on windows
 			settings.cc.defines:Add("NO_VIZ")
 		elseif platform == "macosx" then
 			settings.cc.flags:Add("-mmacosx-version-min=10.5")
 			settings.link.flags:Add("-mmacosx-version-min=10.5")
-			if config.minmacosxsdk.value == 1 then
+			if config.minmacosxsdk.value then
 				settings.cc.flags:Add("-isysroot /Developer/SDKs/MacOSX10.5.sdk")
 				settings.link.flags:Add("-isysroot /Developer/SDKs/MacOSX10.5.sdk")
 			end
-		elseif config.stackprotector.value == 1 then
+		elseif config.stackprotector.value then
 			settings.cc.flags:Add("-fstack-protector", "-fstack-protector-all")
 			settings.link.flags:Add("-fstack-protector", "-fstack-protector-all")
 		end
@@ -189,6 +192,7 @@ function build(settings)
 
 	-- set some platform specific settings
 	settings.cc.includes:Add("src")
+	settings.cc.includes:Add("src/engine/external/wavpack")
 
 	if family == "unix" then
 		if platform == "macosx" then
@@ -214,13 +218,13 @@ function build(settings)
 		settings.link.libs:Add("ws2_32")
 		settings.link.libs:Add("ole32")
 		settings.link.libs:Add("shell32")
-
+		settings.link.libs:Add("advapi32")
 		-- add ICU also here
 		settings.cc.includes:Add("other\\icu\\include")
 	end
 
 	-- compile zlib if needed
-	if config.zlib.value == 1 then
+	if config.zlib.value then
 		settings.link.libs:Add("z")
 		if config.zlib.include_path then
 			settings.cc.includes:Add(config.zlib.include_path)
@@ -235,12 +239,6 @@ function build(settings)
 	wavpack = Compile(settings, Collect("src/engine/external/wavpack/*.c"))
 	pnglite = Compile(settings, Collect("src/engine/external/pnglite/*.c"))
 	json_parser = Compile(settings, Collect("src/engine/external/json-parser/*.c"))
-	
-	-- add the c++11 flag after compiling the c libraries
-	-- TODO: this is just a workaround, better avoid the auto keyword instead :/
-	if config.compiler.driver == "gcc" or config.compiler.driver == "clang" then
-		settings.cc.flags_cxx:Add("--std=c++11")
-	end
 
 	-- build game components
 	engine_settings = settings:Copy()
@@ -408,7 +406,7 @@ if platform == "macosx" then
 
 	DefaultTarget("game_debug_x86")
 	
-	if config.macosxppc.value == 1 then
+	if config.macosxppc.value then
 		if arch == "ia32" then
 			PseudoTarget("release", ppc_r, x86_r)
 			PseudoTarget("debug", ppc_d, x86_d)

@@ -30,14 +30,6 @@ jobs:
         cd bam
         ./make_unix.sh
 
-    - name: Prepare MacOS
-      if: contains(matrix.os, 'macOS')
-      run: |
-        brew update
-        brew install sdl2
-        cd bam
-        ./make_unix.sh
-
     - name: Set up MSVC environment
       if: contains(matrix.os, 'windows')
       uses: ilammy/msvc-dev-cmd@v1
@@ -55,8 +47,3 @@ jobs:
 
     - name: Build in release mode
       run: ./bam/bam conf=release all
-
-    - name: Create MacOS app using make_release.py
-      if: contains(matrix.os, 'macOS')
-      run: |
-        sudo python3 scripts/make_release.py master macos
