@@ -209,7 +209,8 @@ public:
 	void SetRandomSkin();
 	void SetCustomSkin(int Type);
 
-	
+	char m_Language[64];
+
 private:
 	bool m_Spectate;
 	bool m_GotSkin;

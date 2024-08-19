@@ -1301,6 +1301,8 @@ int str_utf8_encode(char *ptr, int chr);
 */
 int str_utf8_check(const char *str);
 
+void str_append_num(char *dst, const char *src, int dst_size, int num);
+
 #ifdef __cplusplus
 }
 #endif

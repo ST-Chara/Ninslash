@@ -80,6 +80,10 @@ public:
 	
 	virtual char *GetMapName() = 0;
 	bool m_MapGenerated; // MapGen
+
+public:
+	class CLocalization* m_pLocalization;
+	inline class CLocalization* Localization() { return m_pLocalization; }
 };
 
 class IGameServer : public IInterface

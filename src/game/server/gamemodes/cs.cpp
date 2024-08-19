@@ -14,7 +14,7 @@
 
 CGameControllerCS::CGameControllerCS(class CGameContext *pGameServer) : IGameController(pGameServer)
 {
-	m_pGameType = "DEF";
+	m_pGameType = "Def";
 	m_GameFlags = GAMEFLAG_TEAMS;
 	
 
@@ -159,7 +159,7 @@ void CGameControllerCS::NewSurvivalRound()
 	}
 	
 	m_Bomb = false;
-	GameServer()->SendBroadcast("Go!", -1);
+	GameServer()->SendBroadcast(-1, false, _("Go!"));
 }
 
 
@@ -167,7 +167,7 @@ void CGameControllerCS::TriggerBomb()
 {
 	// time limit display
 	m_SurvivalStartTick = Server()->Tick() - Server()->TickSpeed()*(g_Config.m_SvSurvivalTime-20.1f);
-	GameServer()->SendBroadcast("Bomb armed", -1);
+	GameServer()->SendBroadcast(-1, false, _("Bomb armed"));
 	m_SurvivalDeathReset = false;
 }
 
@@ -178,7 +178,7 @@ void CGameControllerCS::OnSurvivalTimeOut()
 	{
 		m_SurvivalResetTick = Server()->Tick() + Server()->TickSpeed()*4.0f;
 		m_RoundWinner = TEAM_BLUE;
-		GameServer()->SendBroadcast("Time out - Blue team wins", -1);
+		GameServer()->SendBroadcast(-1, false, _("Time out - Blue team wins"));
 		m_aTeamscore[TEAM_BLUE] += g_Config.m_SvSurvivalReward; 
 	}
 }
@@ -190,7 +190,7 @@ void CGameControllerCS::DisarmBomb()
 	{
 		m_SurvivalResetTick = Server()->Tick() + Server()->TickSpeed()*4.0f;
 		m_RoundWinner = TEAM_BLUE;
-		GameServer()->SendBroadcast("Bomb disarmed - Blue team wins", -1);
+		GameServer()->SendBroadcast(-1, false, _("Bomb disarmed - Blue team wins"));
 		m_aTeamscore[TEAM_BLUE] += g_Config.m_SvSurvivalReward;
 	}
 }
@@ -201,7 +201,7 @@ void CGameControllerCS::ReactorDestroyed()
 	{
 		m_SurvivalResetTick = Server()->Tick() + Server()->TickSpeed()*4.0f;
 		m_RoundWinner = TEAM_RED;
-		GameServer()->SendBroadcast("Reactor destroyed - Red team wins", -1);
+		GameServer()->SendBroadcast(-1, false, _("Reactor destroyed - Red team wins"));
 		m_aTeamscore[TEAM_RED] += g_Config.m_SvSurvivalReward;
 	}
 }
