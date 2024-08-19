@@ -2213,11 +2213,3 @@ void CServer::AddZombie()
 	SetBotDefault(ClientID);
 	SetClientClan(ClientID, "ai");
 }
-
-
-
-
-
-
-
-
