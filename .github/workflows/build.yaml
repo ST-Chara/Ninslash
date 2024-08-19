@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest, windows-2010]
 
     steps:
     - uses: actions/checkout@v2
@@ -38,6 +38,12 @@ jobs:
         cd bam
         ./make_unix.sh
 
+    - name: Set up MSVC environment
+      if: contains(matrix.os, 'windows')
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+  
     - name: Prepare Windows
       if: contains(matrix.os, 'windows')
       run: |
