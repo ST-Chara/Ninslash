@@ -1,0 +1,116 @@
+{
+ "translation": [
+  {
+   "key": "Go!",
+   "value": "Go!"
+  },
+  {
+   "key": "Bomb armed",
+   "value": "Bomb armed"
+  },
+  {
+   "key": "Time out - Blue team wins",
+   "value": "Time out - Blue team wins"
+  },
+  {
+   "key": "Bomb disarmed - Blue team wins",
+   "value": "Bomb disarmed - Blue team wins"
+  },
+  {
+   "key": "Reactor destroyed - Red team wins",
+   "value": "Reactor destroyed - Red team wins"
+  },
+  {
+   "key": "Wave incoming!",
+   "value": "Wave incoming!"
+  },
+  {
+   "key": "Level cleared!",
+   "value": "Level cleared!"
+  },
+  {
+   "key": "Wave cleared!",
+   "value": "Wave cleared!"
+  },
+  {
+   "key": "{%s} reached the door",
+   "value": "{%s} reached the door"
+  },
+  {
+   "key": "{%s} scores for blue team!",
+   "value": "{%s} scores for blue team!"
+  },
+  {
+   "key": "Blue team scores!",
+   "value": "Blue team scores!"
+  },
+  {
+   "key": "{%s} scores for red team!",
+   "value": "{%s} scores for red team!"
+  },
+  {
+   "key": "Red team scores!",
+   "value": "Red team scores!"
+  },
+  {
+   "key": "KILL!",
+   "value": "KILL!"
+  },
+  {
+   "key": "Run",
+   "value": "Run"
+  },
+  {
+   "key": "Hide",
+   "value": "Hide"
+  },
+  {
+   "key": "Escape",
+   "value": "Escape"
+  },
+  {
+   "key": "All hope is lost",
+   "value": "All hope is lost"
+  },
+  {
+   "key": "Slaughter",
+   "value": "Slaughter"
+  },
+  {
+   "key": "Ocean of blood",
+   "value": "Ocean of blood"
+  },
+  {
+   "key": "Death takes all",
+   "value": "Death takes all"
+  },
+  {
+   "key": "Everybody dies",
+   "value": "Everybody dies"
+  },
+  {
+   "key": "Reactor defense",
+   "value": "Reactor defense"
+  },
+  {
+   "key": "Stage completed",
+   "value": "Stage completed"
+  },
+  {
+   "key": "Wave cleared",
+   "value": "Wave cleared"
+  },
+  {
+   "key": "Wave {%d}",
+   "value": "Wave {%d}"
+  },
+  {
+   "key": "All reactors lost",
+   "value": "All reactors lost"
+  },
+  {
+   "key": "Game over on wave {%d}",
+   "value": "Game over on wave {%d}"
+  }
+ ]
+}

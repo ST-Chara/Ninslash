@@ -569,30 +569,17 @@ void CBuilding::Destroy()
 	
 	GameServer()->CreateExplosion(m_Pos, m_DamageOwner, GetBuildingWeapon(m_Type));
 	
-	if (m_Type == BUILDING_MINE1)
+	switch (m_Type)
 	{
-		m_Life = 9000;
-		//GameServer()->CreateMineExplosion(m_Pos, m_DamageOwner, GetBuildingWeapon(m_Type), false);
-		GameServer()->m_World.DestroyEntity(this);
-	}
-	else if (m_Type == BUILDING_MINE2)
+	case BUILDING_MINE1:
+	case BUILDING_MINE2:
 	{
 		m_Life = 9000;
 		GameServer()->m_World.DestroyEntity(this);
+		break;
 	}
-	else if (m_Type == BUILDING_BARREL)
-	{
-		//GameServer()->CreateSound(m_Pos, SOUND_GRENADE_EXPLODE);
-		//GameServer()->CreateExplosion(m_Pos, m_DamageOwner, GetBuildingWeapon(m_Type));
-		GameServer()->m_World.DestroyEntity(this);
-	}
-	else if (m_Type == BUILDING_POWERBARREL)
-	{
-		//GameServer()->CreateSound(m_Pos, SOUND_GRENADE_EXPLODE);
-		//GameServer()->CreateExplosion(m_Pos, m_DamageOwner, GetBuildingWeapon(m_Type));
-		GameServer()->m_World.DestroyEntity(this);
-	}
-	else if (m_Type == BUILDING_REACTOR)
+
+	case BUILDING_REACTOR:
 	{
 		if (!m_DestructionTriggered)
 		{
@@ -600,21 +587,10 @@ void CBuilding::Destroy()
 			GameServer()->m_pController->ReactorDestroyed();
 			m_DestructionTriggered = true;
 		}
-			
-		//GameServer()->CreateSound(m_Pos, SOUND_GRENADE_EXPLODE);
-		GameServer()->m_World.DestroyEntity(this);
-		
-		
-		//GameServer()->SendBroadcast("Reactor lost", -1);
-		//GameServer()->CreateSoundGlobal(SOUND_CTF_DROP);
+		break;
 	}
-	else if (m_Type == BUILDING_FLAMETRAP)
-	{
-		//GameServer()->CreateSound(m_Pos, SOUND_GRENADE_EXPLODE);
-		//GameServer()->CreateExplosion(m_Pos, m_DamageOwner, GetBuildingWeapon(m_Type));
-		GameServer()->m_World.DestroyEntity(this);
-	}
-	else if (m_Type == BUILDING_LIGHTNINGWALL)
+
+	case BUILDING_LIGHTNINGWALL:
 	{
 		m_Life = 0;
 		
@@ -632,9 +608,10 @@ void CBuilding::Destroy()
 		new CLaserFail(GameWorld(), m_Pos, m_Pos + vec2(0, -m_Height), 1);
 		
 		GameServer()->CreateEffect(FX_SMALLELECTRIC, m_Pos);
-		GameServer()->m_World.DestroyEntity(this);
+		break;
 	}
-	else if (m_Type == BUILDING_LIGHTNINGWALL2)
+
+	case BUILDING_LIGHTNINGWALL2:
 	{
 		m_Life = 0;
 		
@@ -650,10 +627,13 @@ void CBuilding::Destroy()
 		}
 		
 		GameServer()->CreateEffect(FX_SMALLELECTRIC, m_Pos);
-		GameServer()->m_World.DestroyEntity(this);
+		break;
 	}
-	else
-		GameServer()->m_World.DestroyEntity(this);
+
+	default:
+		break;
+	}
+	GameServer()->m_World.DestroyEntity(this);
 }
 
 

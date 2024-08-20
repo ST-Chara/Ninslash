@@ -19,6 +19,47 @@
 #include <game/client/components/sounds.h>
 #include "inventory.h"
 
+static const char *s_BuildTipText[NUM_BUILDABLES] = {
+	"Block",
+	"Hard block",
+	"Barrel",
+	"Power barrel",
+	"Turret stand",
+	"Flamer",
+	"Electric wall",
+	"Teslacoil",
+	"Shield generator"
+};
+
+static const char *s_TipText[NUM_SW] = {
+	"Repair tool",
+	"",
+	"",
+	"Grenade",
+	"Electric grenade",
+	"Supply grenade",
+	"",
+	"",
+	"",
+	"",
+	"Weapon upgrade",
+	"Energy shield",
+	"Respawn device",
+	"Mask of regeneration",
+	"Mask of speed",
+	"Mask of protection",
+	"Mask of plenty",
+	"Mask of melee",
+	"Invisibility device",
+	"Electrowall",
+	"Area Shield",
+	"The Cure",
+	"",
+	"",
+	"Zombie claw",
+	"Bomb (for destroying reactors)",
+	""
+};
 
 CInventory::CInventory()
 {
@@ -741,7 +782,7 @@ void CInventory::DrawInventory(vec2 Pos, vec2 Size)
 				vec2 p = Pos-GSize + vec2(x+0.5f, y+0.5f)*GSize/vec2(4, 3)*2;
 				
 				if (x+y*4 < NUM_BUILDABLES && abs(m_SelectorMouse.x - p.x) < s2 && abs(m_SelectorMouse.y - p.y) < s2)
-					TextRender()->Text(0, p.x-s2*0.8f, p.y-s2, s2*0.25f, s_BuildTipText[x+y*4], -1);
+					TextRender()->Text(0, p.x-s2*0.8f, p.y-s2, s2*0.25f, Localize(s_BuildTipText[x+y*4]), -1);
 			}
 		}
 		

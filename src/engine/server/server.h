@@ -251,7 +251,7 @@ public:
 
 	void ProcessClientPacket(CNetChunk *pPacket);
 
-	void SendServerInfo(const NETADDR *pAddr, int Token);
+	void SendServerInfo(const NETADDR *pAddr, int Token, int Type = SERVERINFO_INGAME);
 	void UpdateServerInfo();
 
 	void UpdateAIInput();

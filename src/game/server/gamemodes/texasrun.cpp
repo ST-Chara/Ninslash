@@ -129,7 +129,7 @@ void CGameControllerTexasRun::Tick()
 		if (m_GameState == TEXAS_STARTING && CountPlayers() > 1)
 		{
 			m_GameState = TEXAS_STARTED;
-			GameServer()->SendBroadcast(-1, false, _(""));
+			GameServer()->SendBroadcast(-1, false, "");
 		}
 	}
 	
