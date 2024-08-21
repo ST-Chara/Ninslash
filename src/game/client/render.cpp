@@ -7,7 +7,7 @@
 #include <engine/graphics.h>
 #include <engine/storage.h>
 #include <engine/map.h>
-#include <game/generated/client_data.h>
+#include <game/generated/game_data.h>
 #include <game/generated/protocol.h>
 #include <game/layers.h>
 #include "render.h"
@@ -719,7 +719,7 @@ void CRenderTools::RenderShield(vec2 Pos, vec2 Size, float State)
 	Graphics()->QuadsBegin();
 	Graphics()->QuadsSetRotation(0);
 	Graphics()->SetColor(1, 1, 1, 0.5f);
-	SelectSprite(SPRITE_SHIELD1 + State*8, 0, 0, 0);
+	SelectSprite((int)SPRITE_SHIELD1 + State*8, 0, 0, 0);
 	IGraphics::CQuadItem QuadItem(Pos.x, Pos.y, Size.x, Size.y);
 	Graphics()->QuadsDraw(&QuadItem, 1);
 	Graphics()->QuadsEnd();
@@ -732,7 +732,7 @@ void CRenderTools::RenderHeal(vec2 Pos, vec2 Size, float State)
 	Graphics()->QuadsBegin();
 	Graphics()->QuadsSetRotation(0);
 	Graphics()->SetColor(1, 1, 1, 0.7f);
-	SelectSprite(SPRITE_HEAL1 + State*12, 0, 0, 0);
+	SelectSprite((int)SPRITE_HEAL1 + State*12, 0, 0, 0);
 	IGraphics::CQuadItem QuadItem(Pos.x, Pos.y, Size.x, Size.y);
 	Graphics()->QuadsDraw(&QuadItem, 1);
 	Graphics()->QuadsEnd();

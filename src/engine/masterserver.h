@@ -1,5 +1,5 @@
-
-
+/* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
+/* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #ifndef ENGINE_MASTERSERVER_H
 #define ENGINE_MASTERSERVER_H
 
@@ -24,6 +24,8 @@ public:
 	virtual void Update() = 0;
 	virtual int IsRefreshing() = 0;
 	virtual NETADDR GetAddr(int Index) = 0;
+	virtual void SetCount(int Index, int Count) = 0;
+	virtual int GetCount(int Index) = 0;
 	virtual const char *GetName(int Index) = 0;
 	virtual bool IsValid(int Index) = 0;
 };

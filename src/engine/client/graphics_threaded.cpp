@@ -365,7 +365,7 @@ int CGraphics_Threaded::LoadTextureRawSub(int TextureID, int x, int y, int Width
 	int MemSize = Width*Height*ImageFormatToPixelSize(Format);
 
 	// copy texture data
-	void *pTmpData = mem_alloc(MemSize, sizeof(void*));
+	void *pTmpData = mem_alloc(MemSize);
 	mem_copy(pTmpData, pData, MemSize);
 	Cmd.m_pData = pTmpData;
 
@@ -473,7 +473,7 @@ int CGraphics_Threaded::LoadTextureRaw(int Width, int Height, int Format, const 
 
 	// copy texture data
 	int MemSize = Width*Height*Cmd.m_PixelSize;
-	void *pTmpData = mem_alloc(MemSize, sizeof(void*));
+	void *pTmpData = mem_alloc(MemSize);
 	mem_copy(pTmpData, pData, MemSize);
 	Cmd.m_pData = pTmpData;
 
@@ -542,7 +542,7 @@ int CGraphics_Threaded::LoadPNG(CImageInfo *pImg, const char *pFilename, int Sto
 		return 0;
 	}
 
-	pBuffer = (unsigned char *)mem_alloc(Png.width * Png.height * Png.bpp, 1); // ignore_convention
+	pBuffer = (unsigned char *)mem_alloc(Png.width * Png.height * Png.bpp); // ignore_convention
 	png_get_data(&Png, pBuffer); // ignore_convention
 	png_close_file(&Png); // ignore_convention
 

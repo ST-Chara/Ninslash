@@ -14,7 +14,7 @@
 
 CGameControllerCS::CGameControllerCS(class CGameContext *pGameServer) : IGameController(pGameServer)
 {
-	m_pGameType = "Def";
+	m_pGameType = "CS";
 	m_GameFlags = GAMEFLAG_TEAMS;
 	
 
@@ -41,7 +41,7 @@ CGameControllerCS::CGameControllerCS(class CGameContext *pGameServer) : IGameCon
 	for (int i = 0; i < 9; i++)
 		m_aArea[i] = vec4(0, 0, 0, 0);
 	
-	for (int i = 0; i < MAX_CLIENTS*NUM_SLOTS; i++)
+	for (int i = 0; i < (int)MAX_CLIENTS*(int)NUM_SLOTS; i++)
 		m_aPlayerWeapon[i] = 0;
 	
 	for (int i = 0; i < MAX_CLIENTS; i++)
@@ -286,7 +286,7 @@ void CGameControllerCS::Tick()
 	
 	if (!m_Bomb)
 	{
-		int i = frandom()*MAX_CLIENTS;
+		int i = frandom()*(int)MAX_CLIENTS;
 		
 		if (GameServer()->GetPlayerChar(i) && GameServer()->GetPlayerChar(i)->GiveBomb())
 			m_Bomb = true;

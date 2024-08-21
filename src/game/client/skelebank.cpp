@@ -108,7 +108,7 @@ void CSkelebank::AddSkeleton(const char *pFilename, int StorageType)
 
 	//
 	unsigned DataSize = io_length(File);
-	pSkeletonInfo->m_pJsonData = (char *)mem_alloc(DataSize+1, 1);
+	pSkeletonInfo->m_pJsonData = (char *)mem_alloc(DataSize+1);
 	io_read(File, pSkeletonInfo->m_pJsonData, DataSize);
 	pSkeletonInfo->m_pJsonData[DataSize] = '\0';
 	io_close(File);
@@ -157,7 +157,7 @@ void CSkelebank::AddAtlas(const char *pFilename, int StorageType)
 
 	//
 	unsigned DataSize = io_length(File);
-	pAtlas->m_pAtlasData = (char *)mem_alloc(DataSize+1, 1);
+	pAtlas->m_pAtlasData = (char *)mem_alloc(DataSize+1);
 	io_read(File, pAtlas->m_pAtlasData, DataSize);
 	pAtlas->m_pAtlasData[DataSize] = '\0';
 	io_close(File);

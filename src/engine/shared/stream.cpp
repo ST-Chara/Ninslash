@@ -17,7 +17,6 @@ CStringStream::~CStringStream()
 unsigned CStringStream::Read(void *pBuffer, unsigned Size)
 {
 	dbg_assert(m_pStr != 0x0, "Missing string");
-	dbg_assert(m_Cur >= 0, "Out of range");
 
 	unsigned Len = str_length(m_pStr);
 

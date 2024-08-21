@@ -17,7 +17,7 @@
 CGameControllerDM::CGameControllerDM(class CGameContext *pGameServer)
 : IGameController(pGameServer)
 {
-	m_pGameType = "DM";
+	m_pGameType = "N-DM";
 	
 	g_Config.m_SvDisablePVP = 0;
 

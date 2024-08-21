@@ -2,7 +2,7 @@
 #include <engine/demo.h>
 #include <engine/shared/config.h>
 #include <game/generated/protocol.h>
-#include <game/generated/client_data.h>
+#include <game/generated/game_data.h>
 
 #include <game/gamecore.h> // get_angle
 #include <game/client/gameclient.h>
@@ -34,7 +34,7 @@ void CDroids::RenderWalker(const CNetObj_Droid *pPrev, const CNetObj_Droid *pCur
 	
 	if (CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS] > 0.0f)
 	{
-		if (CustomStuff()->m_DroidDamageType[ItemID%MAX_DROIDS] == DROIDSTATUS_ELECTRIC)
+		if (CustomStuff()->m_DroidDamageType[ItemID%MAX_DROIDS] == (int)DROIDSTATUS_ELECTRIC)
 			RenderTools()->Graphics()->ShaderBegin(SHADER_ELECTRIC, CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS]);
 		else
 			RenderTools()->Graphics()->ShaderBegin(SHADER_DAMAGE, CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS]);
@@ -116,7 +116,7 @@ void CDroids::RenderStar(const CNetObj_Droid *pPrev, const CNetObj_Droid *pCurre
 	
 	if (CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS] > 0.0f)
 	{
-		if (CustomStuff()->m_DroidDamageType[ItemID%MAX_DROIDS] == DROIDSTATUS_ELECTRIC)
+		if (CustomStuff()->m_DroidDamageType[ItemID%MAX_DROIDS] == (int)DROIDSTATUS_ELECTRIC)
 			RenderTools()->Graphics()->ShaderBegin(SHADER_ELECTRIC, CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS]);
 		else
 			RenderTools()->Graphics()->ShaderBegin(SHADER_DAMAGE, CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS]);
@@ -169,7 +169,7 @@ void CDroids::RenderCrawler(const CNetObj_Droid *pPrev, const CNetObj_Droid *pCu
 	
 	if (CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS] > 0.0f)
 	{
-		if (CustomStuff()->m_DroidDamageType[ItemID%MAX_DROIDS] == DROIDSTATUS_ELECTRIC)
+		if (CustomStuff()->m_DroidDamageType[ItemID%MAX_DROIDS] == (int)DROIDSTATUS_ELECTRIC)
 			RenderTools()->Graphics()->ShaderBegin(SHADER_ELECTRIC, CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS]);
 		else
 			RenderTools()->Graphics()->ShaderBegin(SHADER_DAMAGE, CustomStuff()->m_DroidDamageIntensity[ItemID%MAX_DROIDS]);

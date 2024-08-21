@@ -16,7 +16,7 @@ bool CNetServer::Open(NETADDR BindAddr, CNetBan *pNetBan, int MaxClients, int Ma
 	mem_zero(this, sizeof(*this));
 
 	// open socket
-	m_Socket = net_udp_create(BindAddr);
+	m_Socket = net_udp_create(BindAddr, 0);
 	if(!m_Socket.type)
 		return false;
 
@@ -144,7 +144,7 @@ int CNetServer::Recv(CNetChunk *pChunk)
 					for(int i = 0; i < MaxClients(); i++)
 					{
 						if(!m_SlotTakenByBot[i] && m_aSlots[i].m_Connection.State() != NET_CONNSTATE_OFFLINE &&
-							net_addr_comp(m_aSlots[i].m_Connection.PeerAddress(), &Addr) == 0)
+							net_addr_comp(m_aSlots[i].m_Connection.PeerAddress(), &Addr, true) == 0)
 						{
 							Found = true; // silent ignore.. we got this client already
 							break;
@@ -165,7 +165,7 @@ int CNetServer::Recv(CNetChunk *pChunk)
 
 							OtherAddr = *m_aSlots[i].m_Connection.PeerAddress();
 							OtherAddr.port = 0;
-							if(!net_addr_comp(&ThisAddr, &OtherAddr))
+							if(!net_addr_comp(&ThisAddr, &OtherAddr, false))
 							{
 								if(FoundAddr++ >= m_MaxClientsPerIP)
 								{
@@ -220,7 +220,7 @@ int CNetServer::Recv(CNetChunk *pChunk)
 					// normal packet, find matching slot
 					for(int i = 0; i < MaxClients(); i++)
 					{
-						if(net_addr_comp(m_aSlots[i].m_Connection.PeerAddress(), &Addr) == 0)
+						if(net_addr_comp(m_aSlots[i].m_Connection.PeerAddress(), &Addr, true) == 0)
 						{
 							if(m_aSlots[i].m_Connection.Feed(&m_RecvUnpacker.m_Data, &Addr))
 							{

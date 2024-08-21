@@ -1,7 +1,7 @@
 #include <game/mapitems.h>
 #include <engine/shared/mapchunk.h>
 #include "layers.h"
-#include <game/gamecore.h> // MapGen
+#include "gamecore.h" // MapGen
 
 CLayers::CLayers()
 {

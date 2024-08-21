@@ -57,7 +57,7 @@ bool CSpineReader::LoadFromFile(class IStorage *pStorage, const char *pFilename,
 
 	// load file content into memory
 	unsigned DataSize = io_length(File);
-	char *pData = (char *)mem_alloc(DataSize+1, 1);
+	char *pData = (char *)mem_alloc(DataSize+1);
 	io_read(File, pData, DataSize);
 	pData[DataSize] = '\0';
 	io_close(File);
@@ -460,7 +460,7 @@ bool CSpineReader::LoadAtlasFromFile(class IStorage *pStorage , const char *pFil
 
 	// load file content into memory
 	unsigned DataSize = io_length(File);
-	char *pData = (char *)mem_alloc(DataSize+1, 1);
+	char *pData = (char *)mem_alloc(DataSize+1);
 	io_read(File, pData, DataSize);
 	pData[DataSize] = '\0';
 	io_close(File);

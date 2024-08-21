@@ -5,7 +5,7 @@
 #include <engine/shared/config.h>
 
 #include <game/generated/protocol.h>
-#include <game/generated/client_data.h>
+#include <game/generated/game_data.h>
 
 #include <game/gamecore.h> // get_angle
 #include <game/client/gameclient.h>
@@ -124,7 +124,7 @@ void CItems::RenderProjectile(const CNetObj_Projectile *pCurrent, int ItemID)
 	Graphics()->TextureSet(g_pData->m_aImages[IMAGE_PROJECTILES].m_Id);
 	Graphics()->QuadsBegin();
 
-	RenderTools()->SelectSprite(SPRITE_PROJECTILE1_1 + GetProjectileSprite(pCurrent->m_Type));
+	RenderTools()->SelectSprite((int)SPRITE_PROJECTILE1_1 + GetProjectileSprite(pCurrent->m_Type));
 	
 	//	RenderTools()->SelectSprite(SPRITE_GREEN_CHARGE1 + CustomStuff()->GetSpriteFrame(6, 7));
 	// else if (pCurrent->m_Type == WEAPON_RIFLE && pCurrent->m_PowerLevel > 1)

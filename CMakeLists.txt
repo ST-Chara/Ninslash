@@ -1,41 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
 
-file(STRINGS src/game/version.h VERSION_LINE
-  LIMIT_COUNT 1
-  REGEX GAME_RELEASE_VERSION
-)
-
-if(VERSION_LINE MATCHES "\"([0-9]+)\\.([0-9]+)\\.([0-9]+)\"")
-  set(VERSION_MAJOR ${CMAKE_MATCH_1})
-  set(VERSION_MINOR ${CMAKE_MATCH_2})
-  set(VERSION_PATCH ${CMAKE_MATCH_3})
-elseif(VERSION_LINE MATCHES "\"([0-9]+)\\.([0-9]+)\"")
-  set(VERSION_MAJOR ${CMAKE_MATCH_1})
-  set(VERSION_MINOR ${CMAKE_MATCH_2})
-  set(VERSION_PATCH "0")
-else()
-  message(FATAL_ERROR "Couldn't parse version from src/game/version.h")
-endif()
-
-if(POLICY CMP0048)
-  cmake_policy(SET CMP0048 NEW)
-  if(VERSION_PATCH STREQUAL "0")
-    project(Ninslash VERSION ${VERSION_MAJOR}.${VERSION_MINOR})
-  else()
-    project(Ninslash VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
-  endif()
-else()
-  project(Ninslash)
-  set(PROJECT_VERSION_MAJOR ${VERSION_MAJOR})
-  set(PROJECT_VERSION_MINOR ${VERSION_MINOR})
-  set(PROJECT_VERSION_PATCH ${VERSION_PATCH})
-  if(VERSION_PATCH STREQUAL "0")
-    set(PROJECT_VERSION ${VERSION_MAJOR}.${VERSION_MINOR})
-  else()
-    set(PROJECT_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
-  endif()
-endif()
-
 set(ORIGINAL_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
 set(ORIGINAL_CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES})
 set(ORIGINAL_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
@@ -145,6 +109,8 @@ if(NOT MSVC)
   add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wno-missing-field-initializers)
   add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wformat=2) # Warn about format strings.
   add_c_compiler_flag_if_supported(OUR_FLAGS_DEP -Wno-implicit-function-declaration)
+  add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wno-deprecated-copy)
+  add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wno-ignored-qualifiers)
 endif()
 
 if(NOT MSVC)
@@ -370,12 +336,10 @@ chash("src/game/generated/nethash.cpp"
   "src/game/tuning.h"
   "src/game/gamecore.cpp"
 )
-generate_source("src/game/generated/client_data.cpp" "client_content_source")
-generate_source("src/game/generated/client_data.h" "client_content_header")
+generate_source("src/game/generated/game_data.cpp" "game_content_source")
+generate_source("src/game/generated/game_data.h" "game_content_header")
 generate_source("src/game/generated/protocol.cpp" "network_source")
 generate_source("src/game/generated/protocol.h" "network_header")
-generate_source("src/game/generated/server_data.cpp" "server_content_source")
-generate_source("src/game/generated/server_data.h" "server_content_header")
 
 
 ########################################################################
@@ -403,11 +367,31 @@ file(GLOB ENGINE_INTERFACE "src/engine/*.cpp" "src/engine/*.h")
 file(GLOB ENGINE_SHARED "src/engine/shared/*.cpp" "src/engine/shared/*.h")
 
 set(ENGINE_GENERATED_SHARED src/game/generated/protocol.cpp src/game/generated/protocol.h)
-file(GLOB GAME_SHARED "src/game/*.cpp" "src/game/*.h")
+set_glob(GAME_SHARED GLOB src/game/
+  astar.cpp 
+  buildables.h 
+  collision.cpp 
+  collision.h 
+  gamecore.cpp 
+  gamecore.h 
+  layers.cpp 
+  layers.h 
+  localization.cpp 
+  localization.h 
+  mapitems.h 
+  tuning.h 
+  variables.h 
+  version.h 
+  voting.h 
+  weapons.cpp 
+  weapons.h 
+)
 
 set(GAME_GENERATED_SHARED
   src/game/generated/nethash.cpp
   src/game/generated/protocol.h
+  src/game/generated/game_data.cpp
+  src/game/generated/game_data.h
 )
 
 set(DEPS ${DEP_JSON} ${ZLIB_DEP})
@@ -437,11 +421,8 @@ if(CLIENT)
   file(GLOB ENGINE_CLIENT "src/engine/client/*.cpp" "src/engine/client/*.h")
   file(GLOB_RECURSE GAME_CLIENT "src/game/client/*.cpp" "src/game/client/*.h" "src/game/client/components/*.cpp" "src/game/client/components/*.h" "src/game/client/customstuff/*.cpp" "src/game/client/customstuff/*.h")
   file(GLOB GAME_EDITOR "src/game/editor/*.cpp" "src/game/editor/*.h")
-  set(GAME_GENERATED_CLIENT
-    src/game/generated/client_data.cpp
-    src/game/generated/client_data.h
-  )
-  set(CLIENT_SRC ${ENGINE_CLIENT} ${PLATFORM_CLIENT} ${GAME_CLIENT} ${GAME_EDITOR} ${GAME_GENERATED_CLIENT})
+
+  set(CLIENT_SRC ${ENGINE_CLIENT} ${PLATFORM_CLIENT} ${GAME_CLIENT} ${GAME_EDITOR})
 
   set(DEPS_CLIENT ${DEPS} ${PNGLITE_DEP} ${WAVPACK_DEP})
 
@@ -508,10 +489,10 @@ endif()
 
 # Sources
 file(GLOB_RECURSE ENGINE_SERVER "src/engine/server/*.cpp" "src/engine/server/*.h")
-file(GLOB_RECURSE GAME_SERVER "src/game/server/*.cpp" "src/game/server/*.h")
+file(GLOB_RECURSE GAME_SERVER "src/game/server/*.cpp" "src/game/server/*.h" "../pathfinding.cpp" "../pathfinding.h")
 file(GLOB LOCALIZED_SERVER "src/localization/components/*.cpp" "src/localization/components/*.h")
-set(GAME_GENERATED_SERVER src/game/generated/server_data.cpp src/game/generated/server_data.h)
-set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER} ${LOCALIZED_SERVER})
+
+set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${LOCALIZED_SERVER})
 if(TARGET_OS STREQUAL "windows")
   set(SERVER_ICON "other/icons/${SERVER_EXECUTABLE}.rc")
 else()

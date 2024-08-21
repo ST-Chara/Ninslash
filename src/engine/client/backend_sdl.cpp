@@ -17,6 +17,8 @@
 
 #include <engine/shared/config.h>
 
+#pragma GCC diagnostic ignored "-Wvolatile"
+
 // ------------ CGraphicsBackend_Threaded
 
 void CGraphicsBackend_Threaded::ThreadFunc(void *pUser)
@@ -129,7 +131,7 @@ void *CCommandProcessorFragment_OpenGL::Rescale(int Width, int Height, int NewWi
 	if(Format == CCommandBuffer::TEXFORMAT_RGBA)
 		Bpp = 4;
 
-	pTmpData = (unsigned char *)mem_alloc(NewWidth*NewHeight*Bpp, 1);
+	pTmpData = (unsigned char *)mem_alloc(NewWidth*NewHeight*Bpp);
 
 	int c = 0;
 	for(int y = 0; y < NewHeight; y++)
@@ -634,7 +636,7 @@ void CCommandProcessorFragment_OpenGL::Cmd_Screenshot(const CCommandBuffer::SCom
 	int h = aViewport[3];
 
 	// we allocate one more row to use when we are flipping the texture
-	unsigned char *pPixelData = (unsigned char *)mem_alloc(w*(h+1)*3, 1);
+	unsigned char *pPixelData = (unsigned char *)mem_alloc(w*(h+1)*3);
 	unsigned char *pTempRow = pPixelData+w*h*3;
 
 	// fetch the pixels

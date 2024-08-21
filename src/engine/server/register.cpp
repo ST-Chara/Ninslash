@@ -82,7 +82,7 @@ void CRegister::RegisterGotCount(CNetChunk *pChunk)
 
 	for(int i = 0; i < IMasterServer::MAX_MASTERSERVERS; i++)
 	{
-		if(net_addr_comp(&m_aMasterserverInfo[i].m_Addr, &pChunk->m_Address) == 0)
+		if(net_addr_comp(&m_aMasterserverInfo[i].m_Addr, &pChunk->m_Address, true) == 0)
 		{
 			m_aMasterserverInfo[i].m_Count = Count;
 			break;
@@ -245,7 +245,7 @@ int CRegister::RegisterProcessPacket(CNetChunk *pPacket)
 	{
 		NETADDR Addr2 = m_aMasterserverInfo[i].m_Addr;
 		Addr2.port = 0;
-		if(net_addr_comp(&Addr1, &Addr2) == 0)
+		if(net_addr_comp(&Addr1, &Addr2, false) == 0)
 		{
 			Valid = true;
 			break;

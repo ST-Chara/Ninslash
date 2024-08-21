@@ -306,7 +306,7 @@ void CDemoRecorder::AddDemoMarker()
 	if(m_NumTimelineMarkers > 0)
 	{
 		int Diff = m_LastTickMarker - m_aTimelineMarkers[m_NumTimelineMarkers-1];
-		if(Diff < SERVER_TICK_SPEED*1.0f)
+		if(Diff < (float)SERVER_TICK_SPEED)
 			return;
 	}
 
@@ -437,7 +437,7 @@ void CDemoPlayer::ScanFile()
 	}
 
 	// copy all the frames to an array instead for fast access
-	m_pKeyFrames = (CKeyFrame*)mem_alloc(m_Info.m_SeekablePoints*sizeof(CKeyFrame), 1);
+	m_pKeyFrames = (CKeyFrame*)mem_alloc(m_Info.m_SeekablePoints*sizeof(CKeyFrame));
 	for(pCurrentKey = pFirstKey, i = 0; pCurrentKey; pCurrentKey = pCurrentKey->m_pNext, i++)
 		m_pKeyFrames[i] = pCurrentKey->m_Frame;
 
@@ -654,7 +654,7 @@ int CDemoPlayer::Load(class IStorage *pStorage, class IConsole *pConsole, const 
 	else if(MapSize > 0)
 	{
 		// get map data
-		unsigned char *pMapData = (unsigned char *)mem_alloc(MapSize, 1);
+		unsigned char *pMapData = (unsigned char *)mem_alloc(MapSize);
 		io_read(m_File, pMapData, MapSize);
 
 		// save map

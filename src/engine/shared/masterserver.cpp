@@ -1,5 +1,5 @@
-
-
+/* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
+/* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #include <stdio.h>	// sscanf
 
 #include <base/system.h>
@@ -19,7 +19,7 @@ public:
 		char m_aHostname[128];
 		NETADDR m_Addr;
 		bool m_Valid;
-
+		int m_Count;
 		CHostLookup m_Lookup;
 	};
 
@@ -55,6 +55,9 @@ public:
 		{
 			m_pEngine->HostLookup(&m_aMasterServers[i].m_Lookup, m_aMasterServers[i].m_aHostname, Nettype);
 			m_aMasterServers[i].m_Valid = false;
+			m_aMasterServers[i].m_Count = 0;
+			
+			//dbg_msg("MasterServer", "Lookup id: %d, name: %s, nettype: %d", i, m_aMasterServers[i].m_aHostname, Nettype);
 		}
 
 		m_State = STATE_UPDATE;
@@ -79,9 +82,15 @@ public:
 					m_aMasterServers[i].m_Addr = m_aMasterServers[i].m_Lookup.m_Addr;
 					m_aMasterServers[i].m_Addr.port = 8300;
 					m_aMasterServers[i].m_Valid = true;
+					
+						//dbg_msg("MasterServer", "Set server %d, name: %s with addr-port: %d addr-ip %s addr-type %d", i, m_aMasterServers[i].m_aHostname, m_aMasterServers[i].m_Addr.port, m_aMasterServers[i].m_Addr.ip, m_aMasterServers[i].m_Addr.type);
 				}
 				else
+				{
 					m_aMasterServers[i].m_Valid = false;
+					
+					//	dbg_msg("MasterServer", "Dropped %d, name: %s with addr-port: %d addr-ip %s addr-type %d", i, m_aMasterServers[i].m_aHostname);
+				}
 			}
 		}
 
@@ -101,7 +110,17 @@ public:
 	{
 		return m_aMasterServers[Index].m_Addr;
 	}
-
+	
+	virtual void SetCount(int Index, int Count)
+	{
+		m_aMasterServers[Index].m_Count = Count;
+	}
+	
+	virtual int GetCount(int Index)
+	{
+		return m_aMasterServers[Index].m_Count;
+	}
+	
 	virtual const char *GetName(int Index)
 	{
 		return m_aMasterServers[Index].m_aHostname;
@@ -118,11 +137,9 @@ public:
 		m_pStorage = Kernel()->RequestInterface<IStorage>();
 	}
 
-	// default master server ip / master ip
 	virtual void SetDefault()
 	{
 		mem_zero(m_aMasterServers, sizeof(m_aMasterServers));
-				
 		for(int i = 0; i < MAX_MASTERSERVERS; i++)
 			str_format(m_aMasterServers[i].m_aHostname, sizeof(m_aMasterServers[i].m_aHostname), "master%d.teeworlds.com", i+1);
 	}
@@ -184,7 +201,7 @@ public:
 	{
 		if(!m_pStorage)
 			return -1;
-		
+
 		// try to open file
 		IOHANDLE File = m_pStorage->OpenFile("masters.cfg", IOFLAG_WRITE, IStorage::TYPE_SAVE);
 		if(!File)

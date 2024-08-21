@@ -145,7 +145,7 @@ class CTextRender : public IEngineTextRender
 		static int FontMemoryUsage = 0;
 		int Width = CharWidth*Xchars;
 		int Height = CharHeight*Ychars;
-		void *pMem = mem_alloc(Width*Height, 1);
+		void *pMem = mem_alloc(Width*Height);
 		mem_zero(pMem, Width*Height);
 
 		for(int i = 0; i < 2; i++)
@@ -462,7 +462,7 @@ public:
 
 	virtual CFont *LoadFont(const char *pFilename)
 	{
-		CFont *pFont = (CFont *)mem_alloc(sizeof(CFont), 1);
+		CFont *pFont = (CFont *)mem_alloc(sizeof(CFont));
 
 		mem_zero(pFont, sizeof(*pFont));
 		str_copy(pFont->m_aFilename, pFilename, sizeof(pFont->m_aFilename));

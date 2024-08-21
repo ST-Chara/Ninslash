@@ -1,5 +1,5 @@
-
-
+/* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
+/* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #include <engine/config.h>
 #include <engine/friends.h>
 #include <engine/graphics.h>
@@ -8,7 +8,7 @@
 #include <engine/textrender.h>
 #include <engine/shared/config.h>
 
-#include <game/generated/client_data.h>
+#include <game/generated/game_data.h>
 #include <game/generated/protocol.h>
 
 #include <game/localization.h>
@@ -314,11 +314,6 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 			{
 				if(	str_comp(pItem->m_aGameType, "DM") == 0 ||
 					str_comp(pItem->m_aGameType, "TDM") == 0 ||
-					str_comp(pItem->m_aGameType, "BALL") == 0 ||
-					str_comp(pItem->m_aGameType, "DEF") == 0 ||
-					str_comp(pItem->m_aGameType, "INF") == 0 ||
-					str_comp(pItem->m_aGameType, "INV") == 0 ||
-					str_comp(pItem->m_aGameType, "GUN") == 0 ||
 					str_comp(pItem->m_aGameType, "CTF") == 0)
 				{
 					// pure server
@@ -405,7 +400,14 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 			else if(ID == COL_PING)
 			{
 				str_format(aTemp, sizeof(aTemp), "%i", pItem->m_Latency);
+				if (g_Config.m_UiColorizePing)
+				{
+					vec3 rgb = HslToRgb(vec3((300.0f - clamp(pItem->m_Latency, 0, 300)) / 1000.0f, 1.0f, 0.5f));
+					TextRender()->TextColor(rgb.r, rgb.g, rgb.b, 1.0f);
+				}
+
 				UI()->DoLabelScaled(&Button, aTemp, 12.0f, 1);
+				TextRender()->TextColor(1.0f, 1.0f, 1.0f, 1.0f);
 			}
 			else if(ID == COL_VERSION)
 			{
@@ -417,9 +419,42 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 				CTextCursor Cursor;
 				TextRender()->SetCursor(&Cursor, Button.x, Button.y, 12.0f*UI()->Scale(), TEXTFLAG_RENDER|TEXTFLAG_STOP_AT_END);
 				Cursor.m_LineWidth = Button.w;
-				TextRender()->TextEx(&Cursor, pItem->m_aGameType, -1);
-			}
 
+				if (g_Config.m_UiColorizeGametype)
+				{
+					vec3 hsl = vec3(1.0f, 1.0f, 1.0f);
+
+					if (!str_comp(pItem->m_aGameType, "N-DM") || 
+						!str_comp(pItem->m_aGameType, "N-TDM") ||
+						!str_comp(pItem->m_aGameType, "N-CTF"))
+						hsl = vec3(0.33f, 1.f, 0.75f);
+
+					else if (!str_comp(pItem->m_aGameType, "Ball"))
+						hsl = vec3(0.33f, 0.2f, 0.75f);
+
+					else if (!str_comp(pItem->m_aGameType, "Def"))
+						hsl = vec3(0.55f, 0.5f, 0.75f);
+
+					else if (!str_comp(pItem->m_aGameType, "CS"))
+						hsl = vec3(0.33f, 0.2f, 1.f);
+
+					else if (!str_comp(pItem->m_aGameType, "Roam"))
+						hsl = vec3(0.55f, 0.5f, 0.75f);
+
+					else if (!str_comp(pItem->m_aGameType, "Inv"))
+						hsl = vec3(0.75f, 0.25f, 0.55f);
+
+					else if (!str_comp(pItem->m_aGameType, "Inf"))
+						hsl = vec3(0.25f, 0.75f, 0.1f);
+
+					vec3 rgb = HslToRgb(hsl);
+					TextRender()->TextColor(rgb.r, rgb.g, rgb.b, 1.0f);
+					TextRender()->TextEx(&Cursor, pItem->m_aGameType, -1);
+					TextRender()->TextColor(1.0f, 1.0f, 1.0f, 1.0f);
+				}
+				else
+					TextRender()->TextEx(&Cursor, pItem->m_aGameType, -1);
+			}
 		}
 	}
 
@@ -466,7 +501,13 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 	// render status
 	char aBuf[128];
 	if(ServerBrowser()->IsRefreshing())
-		str_format(aBuf, sizeof(aBuf), Localize("%d%% loaded"), ServerBrowser()->LoadingProgression());
+	{
+		char aBuf2[64];
+		char aBuf3[64];
+		str_format(aBuf3, sizeof(aBuf3), Localize("%d%% loaded"), ServerBrowser()->LoadingProgression());
+		str_format(aBuf2, sizeof(aBuf2), Localize("%d of %d servers, %d players"), ServerBrowser()->NumSortedServers(), ServerBrowser()->NumServers(), NumPlayers);
+		str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf3, aBuf2);
+	}
 	else
 		str_format(aBuf, sizeof(aBuf), Localize("%d of %d servers, %d players"), ServerBrowser()->NumSortedServers(), ServerBrowser()->NumServers(), NumPlayers);
 	Status.VSplitRight(TextRender()->TextWidth(0, 14.0f, aBuf, -1), 0, &Status);
@@ -579,6 +620,14 @@ void CMenus::RenderServerbrowserFilters(CUIRect View)
 			m_Popup = POPUP_COUNTRY;
 	}
 
+	ServerFilter.HSplitTop(20.0f, &Button, &ServerFilter);
+	if (DoButton_CheckBox((char *)&g_Config.m_UiColorizeGametype, Localize("Colorize gametype"), g_Config.m_UiColorizeGametype, &Button))
+		g_Config.m_UiColorizeGametype ^= 1;
+
+	ServerFilter.HSplitTop(20.0f, &Button, &ServerFilter);
+	if (DoButton_CheckBox((char *)&g_Config.m_UiColorizePing, Localize("Colorize ping"), g_Config.m_UiColorizePing, &Button))
+		g_Config.m_UiColorizePing ^= 1;
+
 	ServerFilter.HSplitBottom(5.0f, &ServerFilter, 0);
 	ServerFilter.HSplitBottom(ms_ButtonHeight-2.0f, &ServerFilter, &Button);
 	static int s_ClearButton = 0;
@@ -596,9 +645,9 @@ void CMenus::RenderServerbrowserFilters(CUIRect View)
 		g_Config.m_BrFilterGametype[0] = 0;
 		g_Config.m_BrFilterGametypeStrict = 0;
 		g_Config.m_BrFilterServerAddress[0] = 0;
-		g_Config.m_BrFilterPure = 1;
-		g_Config.m_BrFilterPureMap = 1;
-		g_Config.m_BrFilterCompatversion = 1;
+		g_Config.m_BrFilterPure = 0;
+		g_Config.m_BrFilterPureMap = 0;
+		g_Config.m_BrFilterCompatversion = 0;
 		Client()->ServerBrowserUpdate();
 	}
 }
@@ -680,19 +729,23 @@ void CMenus::RenderServerbrowserServerDetail(CUIRect View)
 	}
 
 	// server scoreboard
-	ServerScoreBoard.HSplitBottom(20.0f, &ServerScoreBoard, 0x0);
-	ServerScoreBoard.HSplitTop(ms_ListheaderHeight, &ServerHeader, &ServerScoreBoard);
-	RenderTools()->DrawUIRect(&ServerHeader, vec4(1,1,1,0.25f), CUI::CORNER_T, 4.0f);
-	RenderTools()->DrawUIRect(&ServerScoreBoard, vec4(0,0,0,0.15f), CUI::CORNER_B, 4.0f);
-	UI()->DoLabelScaled(&ServerHeader, Localize("Scoreboard"), FontSize+2.0f, 0);
+	//ServerScoreBoard.HSplitBottom(20.0f, &ServerScoreBoard, 0x0);
 
 	if(pSelectedServer)
 	{
-		ServerScoreBoard.Margin(3.0f, &ServerScoreBoard);
+		static int s_VoteList = 0;
+		static float s_ScrollValue = 0;
+		UiDoListboxStart(&s_VoteList, &ServerScoreBoard, 26.0f, Localize("Scoreboard"), "", pSelectedServer->m_NumClients, 1, -1, s_ScrollValue);
+
 		for (int i = 0; i < pSelectedServer->m_NumClients; i++)
 		{
+			CListboxItem Item = UiDoListboxNextItem(&i);
+
+			if(!Item.m_Visible)
+				continue;
+
 			CUIRect Name, Clan, Score, Flag;
-			ServerScoreBoard.HSplitTop(25.0f, &Name, &ServerScoreBoard);
+			Item.m_Rect.HSplitTop(25.0f, &Name, &Item.m_Rect);
 			if(UI()->DoButtonLogic(&pSelectedServer->m_aClients[i], "", 0, &Name))
 			{
 				if(pSelectedServer->m_aClients[i].m_FriendState == IFriends::FRIEND_PLAYER)
@@ -707,20 +760,32 @@ void CMenus::RenderServerbrowserServerDetail(CUIRect View)
 																								vec4(0.5f, 1.0f, 0.5f, 0.15f+(i%2+1)*0.05f);
 			RenderTools()->DrawUIRect(&Name, Colour, CUI::CORNER_ALL, 4.0f);
 			Name.VSplitLeft(5.0f, 0, &Name);
-			Name.VSplitLeft(30.0f, &Score, &Name);
+			Name.VSplitLeft(34.0f, &Score, &Name);
 			Name.VSplitRight(34.0f, &Name, &Flag);
 			Flag.HMargin(4.0f, &Flag);
 			Name.HSplitTop(11.0f, &Name, &Clan);
 
 			// score
-			if(pSelectedServer->m_aClients[i].m_Player)
+			char aTemp[16];
+
+			if(!pSelectedServer->m_aClients[i].m_Player)
+				str_copy(aTemp, "SPEC", sizeof(aTemp));
+			else if(str_find_nocase(pSelectedServer->m_aGameType, "race") || str_find_nocase(pSelectedServer->m_aGameType, "fastcap"))
 			{
-				char aTemp[16];
-				str_format(aTemp, sizeof(aTemp), "%d", pSelectedServer->m_aClients[i].m_Score);
-				TextRender()->SetCursor(&Cursor, Score.x, Score.y+(Score.h-FontSize)/4.0f, FontSize, TEXTFLAG_RENDER|TEXTFLAG_STOP_AT_END);
-				Cursor.m_LineWidth = Score.w;
-				TextRender()->TextEx(&Cursor, aTemp, -1);
+				if(pSelectedServer->m_aClients[i].m_Score == -9999 || pSelectedServer->m_aClients[i].m_Score == 0)
+					aTemp[0] = 0;
+				else
+				{
+					int Time = abs(pSelectedServer->m_aClients[i].m_Score);
+					str_format(aTemp, sizeof(aTemp), "%02d:%02d", Time/60, Time%60);
+				}
 			}
+			else
+				str_format(aTemp, sizeof(aTemp), "%d", pSelectedServer->m_aClients[i].m_Score);
+
+			TextRender()->SetCursor(&Cursor, Score.x, Score.y+(Score.h-FontSize)/4.0f, FontSize, TEXTFLAG_RENDER|TEXTFLAG_STOP_AT_END);
+			Cursor.m_LineWidth = Score.w;
+			TextRender()->TextEx(&Cursor, aTemp, -1);
 
 			// name
 			TextRender()->SetCursor(&Cursor, Name.x, Name.y, FontSize-2, TEXTFLAG_RENDER|TEXTFLAG_STOP_AT_END);
@@ -770,6 +835,8 @@ void CMenus::RenderServerbrowserServerDetail(CUIRect View)
 			vec4 Color(1.0f, 1.0f, 1.0f, 0.5f);
 			m_pClient->m_pCountryFlags->Render(pSelectedServer->m_aClients[i].m_Country, &Color, Flag.x, Flag.y, Flag.w, Flag.h);
 		}
+
+		UiDoListboxEnd(&s_ScrollValue, 0);
 	}
 }
 
@@ -1001,7 +1068,7 @@ void CMenus::RenderServerbrowser(CUIRect MainView)
 		char aBuf[64];
 		if(str_comp(Client()->LatestVersion(), "0") != 0)
 		{
-			str_format(aBuf, sizeof(aBuf), Localize("Ninslash %s is out! Download it at www.ninslash.com!"), Client()->LatestVersion());
+			str_format(aBuf, sizeof(aBuf), Localize("Ninslash %s is out! Download it at ninslash.com!"), Client()->LatestVersion());
 			TextRender()->TextColor(1.0f, 0.4f, 0.4f, 1.0f);
 		}
 		else

@@ -1,4 +1,4 @@
-#include "client_data.h"
+#include "game_data.h"
 static CDataSound x3614[] = {
 	/* x3614[0] */ {  0,  "audio/wp_gun_fire-01.wv", },
 	/* x3614[1] */ {  0,  "audio/wp_gun_fire-02.wv", },

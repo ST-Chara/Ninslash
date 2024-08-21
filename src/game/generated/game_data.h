@@ -1,5 +1,5 @@
-#ifndef SERVER_CONTENT_HEADER
-#define SERVER_CONTENT_HEADER
+#ifndef GAME_CONTENT_HEADER
+#define GAME_CONTENT_HEADER
 struct CDataSound
 {
 	int m_Id;

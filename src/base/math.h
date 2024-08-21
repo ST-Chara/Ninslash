@@ -29,6 +29,11 @@ inline int round_to_int(float f)
 	return (int)(f-0.5f);
 }
 
+inline int round_truncate(float f)
+{
+	return (int)f;
+}
+
 template<typename T, typename TB>
 inline T mix(const T a, const T b, TB amount)
 {
@@ -69,16 +74,19 @@ template <typename T> inline T min(T a, T b) { return a<b?a:b; }
 template <typename T> inline T max(T a, T b) { return a>b?a:b; }
 template <typename T> inline T absolute(T a) { return a<T(0)?-a:a; }
 
+template<typename T> inline T minimum(T a, T b, T c) { return min(min(a, b), c); }
+template<typename T> inline T maximum(T a, T b, T c) { return max(max(a, b), c); }
+
 // MapGen: Perlin Noise
 inline double fade(double t)
 {
     return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
-inline double lerp(double t, double a, double b)
+/*inline double lerp(double t, double a, double b)
 {
     return a + t * (b - a);
-}
+}*/
 
 inline double grad(int hash, double x, double y, double z)
 {

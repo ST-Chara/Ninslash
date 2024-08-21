@@ -1,8 +1,8 @@
-
-
+/* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
+/* If you are missing that file, acquire a complete release at teeworlds.com.                */
+#include <base/math.h>
 #include <base/system.h>
 
-#include <cstdlib>
 
 struct CPacket
 {
@@ -42,10 +42,10 @@ static int m_ConfigInterval = 10; // seconds between different pingconfigs
 static int m_ConfigLog = 0;
 static int m_ConfigReorder = 0;
 
-void Run(int Port, NETADDR Dest)
+void Run(unsigned short Port, NETADDR Dest)
 {
-	NETADDR Src = {NETTYPE_IPV4, {0,0,0,0}, static_cast<unsigned short>(Port)};
-	NETSOCKET Socket = net_udp_create(Src);
+	NETADDR Src = {NETTYPE_IPV4, {0,0,0,0}, Port};
+	NETSOCKET Socket = net_udp_create(Src, 0);
 
 	char aBuffer[1024*2];
 	int ID = 0;
@@ -79,9 +79,9 @@ void Run(int Port, NETADDR Dest)
 			}
 
 			// create new packet
-			CPacket *p = (CPacket *)mem_alloc(sizeof(CPacket)+Bytes, 1);
+			CPacket *p = (CPacket *)mem_alloc(sizeof(CPacket)+Bytes);
 
-			if(net_addr_comp(&From, &Dest) == 0)
+			if(net_addr_comp(&From, &Dest, true) == 0)
 				p->m_SendTo = Src; // from the server
 			else
 			{
@@ -206,7 +206,7 @@ void Run(int Port, NETADDR Dest)
 	}
 }
 
-int main(int argc, char **argv) // ignore_convention
+int main(int argc, const char **argv)
 {
 	NETADDR Addr = {NETTYPE_IPV4, {127,0,0,1},8303};
 	dbg_logger_stdout();

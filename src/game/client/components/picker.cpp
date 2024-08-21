@@ -3,11 +3,10 @@
 #include <engine/textrender.h>
 #include <engine/shared/config.h>
 #include <game/generated/protocol.h>
-#include <game/generated/client_data.h>
+#include <game/generated/game_data.h>
 
 #include <game/client/gameclient.h>
 #include <game/gamecore.h> // get_angle
-#include <game/weapons.h> // get_angle
 #include <game/client/ui.h>
 #include <game/client/render.h>
 #include <game/client/customstuff.h>
@@ -177,7 +176,7 @@ void CPicker::DrawEmoticons()
 
 	for (int i = 0; i < NUM_EMOTICONS; i++)
 	{
-		float Angle = -pi/2.0f + 2*pi*i/NUM_EMOTICONS;
+		float Angle = -pi/2.0f + 2*pi*i/(int)NUM_EMOTICONS;
 		if (Angle > pi)
 			Angle -= 2*pi;
 
@@ -320,7 +319,7 @@ void CPicker::OnRender()
 	if (length(m_SelectorMouse) > 100.0f)
 	{
 		if (m_PickerType == PICKER_EMOTICON)
-			m_Selected = (int)(SelectedAngle / (2*pi) * NUM_EMOTICONS);
+			m_Selected = (int)(SelectedAngle / (2*pi) * (int)NUM_EMOTICONS);
 	}
 	
 	// items in the middle
