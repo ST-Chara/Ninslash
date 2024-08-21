@@ -1,5 +1,7 @@
 #ifndef GAME_VERSION_H
 #define GAME_VERSION_H
+
+#define FORCE_NETVERSION_HASH "3ddd756f3c7e6cc3" 
 #define GAME_VERSION "0.5.0"
-#define GAME_NETVERSION "0.5.0"
+#define GAME_NETVERSION "0.5 " FORCE_NETVERSION_HASH
 #endif
