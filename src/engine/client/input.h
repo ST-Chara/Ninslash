@@ -5,6 +5,7 @@
 
 class CInput : public IEngineInput
 {
+	CLineInput m_Input;
 	IEngineGraphics *m_pGraphics;
 	IEngineGamepad *m_pGamepad;
 

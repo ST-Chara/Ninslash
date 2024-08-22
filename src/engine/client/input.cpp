@@ -9,6 +9,7 @@
 #include <engine/storage.h>
 #include <engine/input.h>
 #include <engine/keys.h>
+#include <game/client/lineinput.h>
 
 #include "input.h"
 
@@ -288,6 +289,8 @@ int CInput::Update()
 	m_MouseLeft = false;
 	m_MouseEntered = false;
 
+	bool Key_V_Down = false;
+
 	// these states must always be updated manually because they are not in the GetKeyState from SDL
 	int i = SDL_GetMouseState(NULL, NULL);
 	if(i&SDL_BUTTON(1)) m_aInputState[m_InputCurrent][KEY_MOUSE_1] = 1; // 1 is left
@@ -327,6 +330,8 @@ int CInput::Update()
 				// handle keys
 				case SDL_KEYDOWN:
 					Key = SDL_GetScancodeFromName(SDL_GetKeyName(Event.key.keysym.sym));
+					if(Key == KEY_V)
+						Key_V_Down = true;
 					break;
 				case SDL_KEYUP:
 					Action = IInput::FLAG_RELEASE;
