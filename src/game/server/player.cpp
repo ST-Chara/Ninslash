@@ -117,10 +117,10 @@ void CPlayer::DropItem(int Slot, vec2 Pos)
 		GetCharacter()->DropItem(Slot, Pos);
 }
 
-void CPlayer::InventoryRoll()
+void CPlayer::InventoryRoll(int Slot)
 {
 	if (GetCharacter())
-		GetCharacter()->InventoryRoll();
+		GetCharacter()->InventoryRoll(Slot);
 }
 
 void CPlayer::CombineItem(int Item1, int Item2)

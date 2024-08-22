@@ -537,6 +537,9 @@ Bomb (for destroying reactors)
 Borderless window
 == 
 
+Build menu
+== 
+
 Change color of
 == 
 
@@ -577,6 +580,9 @@ Demo details
 == 
 
 Demofile: %s
+== 
+
+Drop weapon
 == 
 
 Dynamic lighting
@@ -642,7 +648,28 @@ Head
 Heads
 == 
 
+Inventory
+== 
+
+Inventory roll
+== 
+
+Inventory roll(All)
+== 
+
 Invisibility device
+== 
+
+Item slot 1
+== 
+
+Item slot 2
+== 
+
+Item slot 3
+== 
+
+Item slot 4
 == 
 
 Kick player
@@ -747,6 +774,9 @@ Server address:
 Server filter
 == 
 
+Server is changing map
+== 
+
 Shield generator
 == 
 
@@ -763,6 +793,9 @@ Size:
 == 
 
 Skin
+== 
+
+Slide / down
 == 
 
 Sound error
@@ -832,6 +865,9 @@ Vote command:
 == 
 
 Vote description:
+== 
+
+Vote ends in %d...
 == 
 
 Waiting for server...

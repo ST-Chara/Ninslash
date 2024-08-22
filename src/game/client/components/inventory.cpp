@@ -115,10 +115,10 @@ void CInventory::ConKeyBuildmenu(IConsole::IResult *pResult, void *pUserData)
 
 void CInventory::ConInventoryRoll(IConsole::IResult *pResult, void *pUserData)
 {
-	((CInventory *)pUserData)->InventoryRoll();
+	((CInventory *)pUserData)->InventoryRoll(false);
 }
 
-void CInventory::InventoryRoll()
+void CInventory::InventoryRoll(bool All)
 {
 	if (m_StupidLock)
 	{
@@ -128,12 +128,33 @@ void CInventory::InventoryRoll()
 	else
 		m_StupidLock = true;
 	
-	CNetMsg_Cl_InventoryAction Msg;
-	Msg.m_Type = INVENTORYACTION_ROLL;
-	Msg.m_Slot = 0;
-	Msg.m_Item1 = 0;
-	Msg.m_Item2 = 0;
-	Client()->SendPackMsg(&Msg, MSGFLAG_VITAL);
+	// Not using -1 for "all" because of if future need do something here
+	if(All)
+	{
+		for (int i = 0; i < NUM_QUICKSLOTS; i++)
+		{
+			CNetMsg_Cl_InventoryAction Msg;
+			Msg.m_Type = INVENTORYACTION_ROLL;
+			Msg.m_Slot = i;
+			Msg.m_Item1 = 0;
+			Msg.m_Item2 = 0;
+			Client()->SendPackMsg(&Msg, MSGFLAG_VITAL);
+		}
+	}
+	else
+	{
+		CNetMsg_Cl_InventoryAction Msg;
+		Msg.m_Type = INVENTORYACTION_ROLL;
+		Msg.m_Slot = -1; // -1 means cureent Weapon Slot
+		Msg.m_Item1 = 0;
+		Msg.m_Item2 = 0;
+		Client()->SendPackMsg(&Msg, MSGFLAG_VITAL);
+	}
+}
+
+void CInventory::ConInventoryRoll_All(IConsole::IResult *pResult, void *pUserData)
+{
+	((CInventory *)pUserData)->InventoryRoll(true);
 }
 
 void CInventory::OnConsoleInit()
@@ -142,6 +163,7 @@ void CInventory::OnConsoleInit()
 	Console()->Register("+inventory", "", CFGFLAG_CLIENT, ConKeyInventory, this, "Open inventory");
 	Console()->Register("+buildmenu", "", CFGFLAG_CLIENT, ConKeyBuildmenu, this, "Open build menu");
 	Console()->Register("+inventoryroll", "", CFGFLAG_CLIENT, ConInventoryRoll, this, "Roll inventory");
+	Console()->Register("+inventoryroll_all", "", CFGFLAG_CLIENT, ConInventoryRoll_All, this, "Roll inventory(All)");
 }
 
 void CInventory::OnReset()

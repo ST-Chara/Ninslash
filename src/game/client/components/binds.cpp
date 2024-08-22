@@ -103,7 +103,8 @@ void CBinds::SetDefaults()
 	Bind(KEY_R, "+buildmenu");
 	Bind(KEY_W, "+charge");
 	//Bind(KEY_Q, "+build");
-	Bind(KEY_MOUSE_3, "+inventoryroll");
+	Bind(KEY_C, "+inventoryroll");
+	Bind(KEY_X, "+inventoryroll_all");
 	//Bind(KEY_MOUSE_3, "+switch");
 	Bind(KEY_F, "+dropweapon");
 	Bind(KEY_LSHIFT, "+emote");

@@ -699,6 +699,9 @@ Bomb (for destroying reactors)
 Borderless window
 == 
 
+Build menu
+== 
+
 Change color of
 == 
 
@@ -709,6 +712,9 @@ Chat & Misc.
 == 
 
 Customize
+== 
+
+Drop weapon
 == 
 
 Dynamic lighting
@@ -765,7 +771,28 @@ Head
 Heads
 == 
 
+Inventory
+== 
+
+Inventory roll
+== 
+
+Inventory roll(All)
+== 
+
 Invisibility device
+== 
+
+Item slot 1
+== 
+
+Item slot 2
+== 
+
+Item slot 3
+== 
+
+Item slot 4
 == 
 
 Main menu
@@ -804,10 +831,16 @@ Repair tool
 Respawn device
 == 
 
+Server is changing map
+== 
+
 Shield generator
 == 
 
 Skin
+== 
+
+Slide / down
 == 
 
 Supply grenade
@@ -835,6 +868,9 @@ Threaded sound loading
 == 
 
 Turret stand
+== 
+
+Vote ends in %d...
 == 
 
 Waiting for server...

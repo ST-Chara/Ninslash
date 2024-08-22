@@ -187,7 +187,7 @@ public:
 	void DropWeapon();
 	
 	// inventory
-	void InventoryRoll();
+	void InventoryRoll(int Slot);
 	void DropItem(int Slot, vec2 Pos);
 	void SwapItem(int Item1, int Item2);
 	void CombineItem(int Item1, int Item2);

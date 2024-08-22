@@ -106,6 +106,9 @@ Bomb (for destroying reactors)
 Borderless window
 == 无边框窗口
 
+Build menu
+== 建造菜单
+
 Call vote
 == 发起投票
 
@@ -198,6 +201,9 @@ Downloading map
 
 Draw!
 == 平局!
+
+Drop weapon
+== 丢弃武器
 
 Dynamic Camera
 == 动态镜头
@@ -355,8 +361,29 @@ Internet
 Invalid Demo
 == 无效的回放
 
+Inventory
+== 打开物品栏
+
+Inventory roll
+== 切换物品栏(手中物品)
+
+Inventory roll(All)
+== 切换物品栏(整行切换)
+
 Invisibility device
 == 隐身科技
+
+Item slot 1
+== 切换到第1个物品
+
+Item slot 2
+== 切换到第2个物品
+
+Item slot 3
+== 切换到第3个物品
+
+Item slot 4
+== 切换到第4个物品
 
 Join blue
 == 加入蓝队
@@ -640,6 +667,9 @@ Server filter
 Server info
 == 服务器信息
 
+Server is changing map
+== 服务器正在切换地图
+
 Server not full
 == 服务器未满
 
@@ -678,6 +708,9 @@ Skin
 
 Skins
 == 皮肤
+
+Slide / down
+== 滑铲 / 下蹲
 
 Sound
 == 声音
@@ -810,6 +843,9 @@ Vote command:
 
 Vote description:
 == 投票描述:
+
+Vote ends in %d...
+== 投票将在 %d 秒后结束
 
 Vote no
 == 否决

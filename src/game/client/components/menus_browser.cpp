@@ -620,14 +620,6 @@ void CMenus::RenderServerbrowserFilters(CUIRect View)
 			m_Popup = POPUP_COUNTRY;
 	}
 
-	ServerFilter.HSplitTop(20.0f, &Button, &ServerFilter);
-	if (DoButton_CheckBox((char *)&g_Config.m_UiColorizeGametype, Localize("Colorize gametype"), g_Config.m_UiColorizeGametype, &Button))
-		g_Config.m_UiColorizeGametype ^= 1;
-
-	ServerFilter.HSplitTop(20.0f, &Button, &ServerFilter);
-	if (DoButton_CheckBox((char *)&g_Config.m_UiColorizePing, Localize("Colorize ping"), g_Config.m_UiColorizePing, &Button))
-		g_Config.m_UiColorizePing ^= 1;
-
 	ServerFilter.HSplitBottom(5.0f, &ServerFilter, 0);
 	ServerFilter.HSplitBottom(ms_ButtonHeight-2.0f, &ServerFilter, &Button);
 	static int s_ClearButton = 0;
@@ -1068,7 +1060,7 @@ void CMenus::RenderServerbrowser(CUIRect MainView)
 		char aBuf[64];
 		if(str_comp(Client()->LatestVersion(), "0") != 0)
 		{
-			str_format(aBuf, sizeof(aBuf), Localize("Ninslash %s is out! Download it at ninslash.com!"), Client()->LatestVersion());
+			str_format(aBuf, sizeof(aBuf), Localize("Ninslash %s is out! Download it at www.ninslash.com!"), Client()->LatestVersion());
 			TextRender()->TextColor(1.0f, 0.4f, 0.4f, 1.0f);
 		}
 		else
