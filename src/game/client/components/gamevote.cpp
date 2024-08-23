@@ -284,7 +284,7 @@ void CGameVoteDisplay::OnRender()
 			str_copy(aBuf, Localize("Server is changing map"), sizeof(aBuf));
 		}
 		else
-			str_copy(aBuf, Localize("Vote ends in %d..."), sizeof(aBuf));
+			str_format(aBuf, sizeof(aBuf), Localize("Vote ends in %d..."), Time);
 			
 		
 		CTextCursor Cursor;

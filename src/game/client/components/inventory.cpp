@@ -253,6 +253,20 @@ bool CInventory::OnInput(IInput::CEvent Event)
 			m_MouseTrigger = true;
 		return true;
 	}
+	else if(Event.m_Key == KEY_ESCAPE)
+	{
+		if(!m_pClient->m_Snap.m_SpecInfo.m_Active && Client()->State() != IClient::STATE_DEMOPLAYBACK)
+		{
+			if (m_Render)
+			{
+				CustomStuff()->m_Inventory = false;
+				m_Active = false;
+				m_WasActive = false;
+				m_Render = false;
+				return true;
+			}
+		}
+	}
 
 	return false;
 }

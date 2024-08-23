@@ -20,7 +20,6 @@ void CLineInput::Clear()
 
 void CLineInput::Init(IInput *pInput)
 {
-	dbg_msg("dasda", "aaaaaaaaaaaaaaaaaa");
 	m_pInput = pInput;
 }
 
