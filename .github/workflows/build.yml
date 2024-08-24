@@ -125,12 +125,6 @@ jobs:
         ref: 8cd08744c37666830d439ab54016c9d228c63b68
         path: ./bam
 
-    - name: Checkout generated
-      uses: actions/checkout@v2
-      with:
-        repository: ST-Chara/Ninslash-generated
-        path: ./src/game/generated
-
     - name: Prepare Linux
       if: contains(matrix.os, 'ubuntu')
       run: |
@@ -142,6 +136,7 @@ jobs:
     - name: Prepare Windows
       if: contains(matrix.os, 'windows')
       run: |
+        git clone https://github.com/ST-Chara/Ninslash-generated src/game/generated
         cd bam
         ./make_win64_msvc.bat
 
