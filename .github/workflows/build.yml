@@ -3,115 +3,16 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build-cmake:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest, ubuntu-20.04]
-        include:
-        - os: ubuntu-latest
-          cmake-args: -G Ninja
-          package-file: "*-linux_x86_64.tar.xz"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
-        - os: ubuntu-20.04
-          cmake-path: /usr/bin/
-          cmake-args: -G Ninja
-          package-file: "*-linux_x86_64.tar.xz"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
-        - os: macOS-latest
-          cmake-args: -G Ninja
-          package-file: "*-macos.dmg"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
-        - os: windows-latest
-          cmake-args: -A x64
-          package-file: "*-win64.zip"
-          env:
-            CFLAGS: /WX
-            CXXFLAGS: /WX
-            LDFLAGS: /WX
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-
-    - name: Prepare Linux
-      if: contains(matrix.os, 'ubuntu')
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install python3 pkg-config cmake ninja-build libfreetype6-dev libsdl2-dev libicu-dev libglew-dev -y
-
-    - name: Prepare MacOS
-      if: contains(matrix.os, 'macOS')
-      run: |
-        brew update || true
-        brew install pkg-config sdl2 python3 icu4c ninja glew || true
-        # --overwrite for:  Target /usr/local/bin/2to3 already exists.
-        brew link --overwrite python@3.9.13
-        brew upgrade freetype
-        sudo rm -rf /Library/Developer/CommandLineTools
-
-    - name: Build in debug mode
-      env: ${{ matrix.env }}
-      run: |
-        mkdir debug
-        cd debug
-        ${{ matrix.cmake-path }}cmake --version
-        ${{ matrix.cmake-path }}cmake ${{ matrix.cmake-args }} -DCMAKE_BUILD_TYPE=Debug -Werror=dev -DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG=. ..
-        ${{ matrix.cmake-path }}cmake --build . --config Debug ${{ matrix.build-args }} --target everything
-    - name: Test debug
-      run: |
-        cd debug
-        ${{ matrix.cmake-path }}cmake --build . --config Debug ${{ matrix.build-args }} --target run_tests
-    - name: Run debug server
-      env: ${{ matrix.env }}
-      run: |
-        cd debug
-        ./ninslash_srv shutdown
-
-    - name: Build in release mode
-      env: ${{ matrix.env }}
-      run: |
-        mkdir release
-        cd release
-        ${{ matrix.cmake-path }}cmake ${{ matrix.cmake-args }} -DCMAKE_BUILD_TYPE=Release -Werror=dev -DDOWNLOAD_GTEST=ON -DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE=. ..
-        ${{ matrix.cmake-path }}cmake --build . --config Release ${{ matrix.build-args }} --target everything
-    - name: Test release
-      run: |
-        cd release
-        ${{ matrix.cmake-path }}cmake --build . --config Release ${{ matrix.build-args }} --target run_tests
-    - name: Run release server
-      env: ${{ matrix.env }}
-      run: |
-        cd release
-        ./ninslash_srv shutdown
-
-    - name: Package
-      run: |
-        cd release
-        ${{ matrix.cmake-path }}cmake --build . --config Release ${{ matrix.build-args }} --target package_default
-        mkdir artifacts
-        mv ${{ matrix.package-file }} artifacts
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: ninslash-${{ matrix.os }}
-        path: release/artifacts
-
   build-bam:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
+        include:
+        - name: "Ubuntu-Latest x86_64"
+          os: ubuntu-latest
+          package-full-file: ninslash-linux_x86_64-full.tar.xz
 
     steps:
     - uses: actions/checkout@v2
@@ -129,19 +30,21 @@ jobs:
       if: contains(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update -y
-        sudo apt-get install libfreetype6-dev libsdl2-dev libglew-dev -y
-        cd bam
-        ./make_unix.sh
-
-    - name: Prepare Windows
-      if: contains(matrix.os, 'windows')
-      run: |
-        git clone https://github.com/ST-Chara/Ninslash-generated src/game/generated
-        cd bam
-        ./make_win64_msvc.bat
+        sudo apt-get install bam libsdl2-dev python3 libicu-dev -y
 
     - name: Build in debug mode
-      run: ./bam/bam conf=debug all
+      run: bam debug
 
     - name: Build in release mode
-      run: ./bam/bam conf=release all
+      run: bam release
+
+    - name: Package(Linux)
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        tar -cf ${{ matrix.package-full-file }} ninslash_srv ninslash data cfg
+        
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: ${{ matrix.name }}
+        path: ${{ matrix.package-full-file }}
