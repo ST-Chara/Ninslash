@@ -46,7 +46,7 @@ jobs:
       if: contains(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update -y
-        sudo apt-get install pkg-config cmake ninja-build libfreetype6-dev libsdl2-dev libicu-dev libglew-dev -y
+        sudo apt-get install python3 pkg-config cmake ninja-build libfreetype6-dev libsdl2-dev libicu-dev libglew-dev -y
 
     - name: Prepare MacOS
       if: contains(matrix.os, 'macOS')
