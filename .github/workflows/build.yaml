@@ -8,13 +8,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-2020]
+        os: [ubuntu-latest, windows-latest]
         include:
         - name: "Ubuntu-Latest x86_64"
           os: ubuntu-latest
           package-full-file: ninslash-linux_x86_64-release.tar.xz
         - name: "Windows"
-          os: windows-2020
+          os: windows-latest
           package-full-file: ninslash-windows_x64-release.tar.xz
 
     steps:
