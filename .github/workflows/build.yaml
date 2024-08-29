@@ -49,10 +49,6 @@ jobs:
       if: contains(matrix.os, 'ubuntu')
       run: bam release
 
-    - name: Build in debug mode(Windows)
-      if: contains(matrix.os, 'Windows')
-      run: ./bam/bam debug
-
     - name: Build in release mode(Windows)
       if: contains(matrix.os, 'Windows')
       run: ./bam/bam release
