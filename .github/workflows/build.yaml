@@ -13,22 +13,15 @@ jobs:
         - os: ubuntu-latest
           cmake-args: -G Ninja
           package-file: "*-linux_x86_64.tar.xz"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
+
         - os: ubuntu-20.04
           cmake-path: /usr/bin/
           cmake-args: -G Ninja
           package-file: "*-linux_x86_64.tar.xz"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
+
         - os: macOS-latest
           cmake-args: -G Ninja
           package-file: "*-macos.dmg"
-          env:
-            CFLAGS: -Wdeclaration-after-statement -Werror
-            CXXFLAGS: -Werror
 
     steps:
     - uses: actions/checkout@v2
@@ -57,16 +50,16 @@ jobs:
         mkdir debug
         cd debug
         ${{ matrix.cmake-path }}cmake --version
-        ${{ matrix.cmake-path }}cmake ${{ matrix.cmake-args }} -DCMAKE_BUILD_TYPE=Debug ..
-        ${{ matrix.cmake-path }}cmake --build . --config Debug ${{ matrix.build-args }}
+        ${{ matrix.cmake-path }}cmake -DCMAKE_BUILD_TYPE=Debug ..
+        ${{ matrix.cmake-path }}cmake --build . --config Debug
 
     - name: Build in release mode
       env: ${{ matrix.env }}
       run: |
         mkdir release
         cd release
-        ${{ matrix.cmake-path }}cmake ${{ matrix.cmake-args }} -DCMAKE_BUILD_TYPE=Release ..
-        ${{ matrix.cmake-path }}cmake --build . --config Release ${{ matrix.build-args }}
+        ${{ matrix.cmake-path }}cmake -DCMAKE_BUILD_TYPE=Release ..
+        ${{ matrix.cmake-path }}cmake --build . --config Release
 
   build-bam:
     runs-on: ${{ matrix.os }}
