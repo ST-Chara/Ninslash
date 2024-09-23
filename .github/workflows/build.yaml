@@ -39,13 +39,13 @@ jobs:
       if: contains(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update -y
-        sudo apt-get install pkg-config cmake ninja-build libfreetype6-dev libsdl2-dev -y
+        sudo apt-get install pkg-config cmake ninja-build libfreetype6-dev libsdl2-dev libglew-dev -y
 
     - name: Prepare MacOS
       if: contains(matrix.os, 'macOS')
       run: |
         brew update || true
-        brew install pkg-config sdl2 python3 ninja || true
+        brew install pkg-config sdl2 python3 ninja glew || true
         # --overwrite for:  Target /usr/local/bin/2to3 already exists.
         brew link --overwrite python@3.12
         brew upgrade freetype
