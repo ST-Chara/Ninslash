@@ -297,7 +297,7 @@ function SharedCommonFiles()
 		AddDependency(network_source, network_header, "src/engine/shared/protocol.h")
 		AddDependency(game_content_source, game_content_header)
 
-		local nethash = CHash("generated/nethash.cpp", "src/engine/shared/protocol.h", "src/game/tuning.h", "src/game/gamecore.cpp", network_header)
+		local nethash = CHash("generated/nethash.cpp", "src/engine/shared/protocol.h", network_header, "src/game/tuning.h", "src/game/gamecore.cpp")
 		shared_common_files = {network_source, game_content_source, nethash}
 	end
 
