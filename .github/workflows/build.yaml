@@ -42,9 +42,8 @@ jobs:
     - name: Package Release
       if: contains(matrix.os, 'ubuntu')
       run: |
-        mv ninslash ninslash_srv .
         tar -cf ${{ matrix.package-full-file }} cfg/ data/ ninslash ninslash_srv autoexec.cfg license.txt readme.md storage.cfg
-        
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
