@@ -34,16 +34,16 @@ jobs:
         sudo apt-get install bam libsdl2-dev python3 libglew-dev libfreetype6-dev -y
 
     - name: Build in debug mode
-      run: bam conf=debug
+      run: bam debug
 
     - name: Build in release mode
-      run: bam conf=release
+      run: bam release
 
     - name: Package Release
       if: contains(matrix.os, 'ubuntu')
       run: |
-        mv ninslash_srv ninslash .
-        tar -cf ${{ matrix.package-full-file }} ninslash_srv ninslash data/ cfg/ storage.cfg license.txt autoexec.cfg
+        mv ninslash ninslash_srv .
+        tar -cf ${{ matrix.package-full-file }} cfg/ data/ ninslash ninslash_srv autoexec.cfg license.txt readme.md storage.cfg
         
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
