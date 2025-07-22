@@ -32,7 +32,6 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo apt-get install bam libsdl2-dev python3 libglew-dev libfreetype6-dev -y
-
     - name: Build in debug mode
       run: bam conf=debug
 

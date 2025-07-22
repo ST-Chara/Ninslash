@@ -2,7 +2,7 @@
 #define GAME_WEAPONS_H
 
 #include <cstring>
-#include <generated/protocol.h>
+#include <game/generated/protocol.h>
 #include <base/vmath.h>
 
 enum PlayerItems
