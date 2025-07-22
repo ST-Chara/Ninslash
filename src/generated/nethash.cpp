@@ -1,1 +1,0 @@
-#define GAME_NETVERSION_HASH "e33016f70ba7cb57"
