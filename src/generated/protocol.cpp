@@ -760,7 +760,9 @@ void *CNetObjHandler::SecureUnpackMsg(int Type, CUnpacker *pUnpacker)
 		pMsg->m_ColorSkin = pUnpacker->GetInt();
 		pMsg->m_BloodColor = pUnpacker->GetInt();
 		pMsg->m_IsBot = pUnpacker->GetInt();
+		pMsg->m_Language = pUnpacker->GetInt();
 		if(pMsg->m_IsBot < 0 || pMsg->m_IsBot > 1) { m_pMsgFailedOn = "m_IsBot"; break; }
+		if(pMsg->m_Language < 0 || pMsg->m_IsBot > 999) { m_pMsgFailedOn = "m_Language"; break; }
 	} break;
 	
 	case NETMSGTYPE_CL_CHANGEINFO:
@@ -782,7 +784,9 @@ void *CNetObjHandler::SecureUnpackMsg(int Type, CUnpacker *pUnpacker)
 		pMsg->m_ColorSkin = pUnpacker->GetInt();
 		pMsg->m_BloodColor = pUnpacker->GetInt();
 		pMsg->m_IsBot = pUnpacker->GetInt();
+		pMsg->m_Language = pUnpacker->GetInt();
 		if(pMsg->m_IsBot < 0 || pMsg->m_IsBot > 1) { m_pMsgFailedOn = "m_IsBot"; break; }
+		if(pMsg->m_Language < 0 || pMsg->m_IsBot > 999) { m_pMsgFailedOn = "m_Language"; break; }
 	} break;
 	
 	case NETMSGTYPE_CL_KILL:

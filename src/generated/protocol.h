@@ -1093,6 +1093,7 @@ struct CNetMsg_Cl_StartInfo
 	int m_ColorSkin;
 	int m_BloodColor;
 	int m_IsBot;
+	int m_Language;
 	int MsgID() const { return NETMSGTYPE_CL_STARTINFO; }
 	
 	bool Pack(CMsgPacker *pPacker)
@@ -1112,6 +1113,7 @@ struct CNetMsg_Cl_StartInfo
 		pPacker->AddInt(m_ColorSkin);
 		pPacker->AddInt(m_BloodColor);
 		pPacker->AddInt(m_IsBot);
+		pPacker->AddInt(m_Language);
 		return pPacker->Error() != 0;
 	}
 };
@@ -1133,6 +1135,7 @@ struct CNetMsg_Cl_ChangeInfo
 	int m_ColorSkin;
 	int m_BloodColor;
 	int m_IsBot;
+	int m_Language;
 	int MsgID() const { return NETMSGTYPE_CL_CHANGEINFO; }
 	
 	bool Pack(CMsgPacker *pPacker)
@@ -1152,6 +1155,7 @@ struct CNetMsg_Cl_ChangeInfo
 		pPacker->AddInt(m_ColorSkin);
 		pPacker->AddInt(m_BloodColor);
 		pPacker->AddInt(m_IsBot);
+		pPacker->AddInt(m_Language);
 		return pPacker->Error() != 0;
 	}
 };
