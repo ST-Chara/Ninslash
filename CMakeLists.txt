@@ -1133,8 +1133,6 @@ foreach(target ${TARGETS_OWN})
   target_compile_definitions(${target} PRIVATE $<$<CONFIG:Debug>:CONF_DEBUG>)
   target_include_directories(${target} PRIVATE ${ZLIB_INCLUDE_DIRS})
 
-  target_link_options(${target} PUBLIC $<$<AND:$<CXX_COMPILER_ID:GNU>,$<PLATFORM_ID:Linux>>:-fsanitize=address -static-libasan>)
-
   set_target_properties(${target} PROPERTIES CXX_STANDARD_REQUIRED ON)
   target_compile_features(${target} PUBLIC cxx_std_17)
 
