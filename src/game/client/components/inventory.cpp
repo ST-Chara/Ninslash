@@ -31,7 +31,7 @@ static const char *s_BuildTipText[NUM_BUILDABLES] = {
 	"Shield generator"
 };
 
-static const char *s_TipText[NUM_SW] = {
+static const char *s_TipText[NUM_STATIC_WEAPONS] = {
 	"Repair tool",
 	"",
 	"",
