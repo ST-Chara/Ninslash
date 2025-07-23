@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "a*"
+      - "b*"
+      - "v*"
+
+jobs:
+  build-bam:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        include:
+        - name: "Ubuntu-Latest x86_64"
+          os: ubuntu-latest
+          package-full-file: ninslash-linux_x86_64-release.tar.xz
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Checkout bam
+      uses: actions/checkout@v4
+      with:
+        repository: matricks/bam
+        ref: 8cd08744c37666830d439ab54016c9d228c63b68
+        path: ./bam
+
+    - name: Prepare Linux
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install bam libsdl2-dev python3 libglew-dev libfreetype6-dev -y
+
+    - name: Build in release mode
+      run: bam release
+
+    - name: Package Release
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        tar -cf ${{ matrix.package-full-file }} ninslash_srv ninslash data cfg storage.cfg license.txt autoexec.cfg
+        
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.name }}
+        path: ${{ matrix.package-full-file }}
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release commit ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ matrix.package-full-file }}
+        asset_name: ${{ matrix.package-full-file }}
+        asset_content_type: application/g-zip
