@@ -233,7 +233,7 @@ public:
 	
 	void RegisterGameVote(int ClientID, int Vote);
 	void SendGameVoteStats();
-	const char *GetVoteWinnerConfig();
+	// const char *GetVoteWinnerConfig();
 	void CalculateVoteWinnerConfig();
 
 

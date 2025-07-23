@@ -26,6 +26,7 @@ private:
 
 public:
     CLocalization(IStorage *pStorage);
+    ~CLocalization() {};
     
     virtual void Init();
     virtual const char *GetLanguageCode(int Country);

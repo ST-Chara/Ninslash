@@ -2262,6 +2262,7 @@ int main(int argc, const char **argv) // ignore_convention
 	delete pEngineMasterServer;
 	delete pStorage;
 	delete pConfig;
+	delete pLocalization;
 	return 0;
 }
 

@@ -1252,9 +1252,7 @@ void CGameContext::CalculateVoteWinnerConfig()
 	m_WinnerVote = i;
 }
 
-
-
-const char *CGameContext::GetVoteWinnerConfig()
+/*const char *CGameContext::GetVoteWinnerConfig()
 {
 	int aVotes[6] = {0, 0, 0, 0, 0, 0};
 
@@ -1286,13 +1284,10 @@ const char *CGameContext::GetVoteWinnerConfig()
 		Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "GetVoteWinnerConfig", aBuf);
 		
 		return static_cast < const char * > (aBuf);
-		/*const char * a = aBuf;
-		return a;
-		*/
 		
 		//return static_cast < const char * > (aBuf);
 	}
-}
+}*/
 
 	
 void CGameContext::SendGameVotes(int ClientID)
