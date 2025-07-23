@@ -4,16 +4,15 @@
 
 #include "weapons.h"
 
-namespace {
-    constexpr float BASE_PROJECTILE_SIZE = 1.0f;
-    constexpr float DROID_WALKER_SIZE = 1.0f;
-    constexpr float DROID_STAR_SIZE = 2.0f;
-    constexpr float GRENADE_SIZE = 2.5f;
-    constexpr float BAZOOKA_SIZE = 1.3f;
-    constexpr float CHARGE_MULTIPLIER = 0.25f;
-    constexpr float BASE_COST1 = 10.0f;
-    constexpr float BASE_COST2 = 20.0f;
-}
+static const int MAX_WEAPON_CHARGE = 15;
+static const float BASE_PROJECTILE_SIZE = 1.0f;
+static const float DROID_WALKER_SIZE = 1.0f;
+static const float DROID_STAR_SIZE = 2.0f;
+static const float GRENADE_SIZE = 2.5f;
+static const float BAZOOKA_SIZE = 1.3f;
+static const float CHARGE_MULTIPLIER = 0.25f;
+static const float BASE_COST1 = 10.0f;
+static const float BASE_COST2 = 20.0f;
 
 const bool ValidForTurret(int Weapon)
 {
@@ -234,7 +233,7 @@ const float GetProjectileSize(int Weapon)
             case SW_AREASHIELD: return GRENADE_SIZE;
             case SW_BALL: return 2.0f;
             case SW_SHURIKEN: return 2.5f;
-            case SW_CLUSTER: return GetWeaponCharge(Weapon) == WeaponConstants::MAX_WEAPON_CHARGE ? 1.5f : 1.0f;
+            case SW_CLUSTER: return GetWeaponCharge(Weapon) == MAX_WEAPON_CHARGE ? 1.5f : 1.0f;
             case SW_BAZOOKA: return BAZOOKA_SIZE;
             case SW_BOUNCER: return BASE_PROJECTILE_SIZE + Charge * 0.1f;
             case SW_GUN1: return 0.7f;
@@ -1061,7 +1060,7 @@ const float GetProjectileSpeed(int Weapon)
 		switch (GetStaticType(Weapon))
 		{
 			case SW_GUN1: return 1200.0f;
-			case SW_CLUSTER: return GetWeaponCharge(Weapon) == WeaponConstants::MAX_WEAPON_CHARGE ? 600.0f : 1000.0f;
+			case SW_CLUSTER: return GetWeaponCharge(Weapon) == MAX_WEAPON_CHARGE ? 600.0f : 1000.0f;
 			case SW_BAZOOKA: return 400.0f;
 			case SW_BOUNCER: return 1500.0f;
 			
@@ -1120,7 +1119,7 @@ const float GetProjectileCurvature(int Weapon)
 			case SW_GUN1: return 2.2f;
 			case SW_BAZOOKA: return 0.0f;
 			case SW_BOUNCER: return 0.5f;
-			case SW_CLUSTER: return GetWeaponCharge(Weapon) == WeaponConstants::MAX_WEAPON_CHARGE ? 16.0f : 7.0f;
+			case SW_CLUSTER: return GetWeaponCharge(Weapon) == MAX_WEAPON_CHARGE ? 16.0f : 7.0f;
 			
 			default: return 0.0f;
 		};
@@ -1695,7 +1694,7 @@ const float GetProjectileLife(int Weapon)
 		switch (GetStaticType(Weapon))
 		{
 			case SW_GUN1: return 0.6f;
-			case SW_CLUSTER: return GetWeaponCharge(Weapon) == WeaponConstants::MAX_WEAPON_CHARGE ? 0.3f+frandom()*0.7f : 2.0f;
+			case SW_CLUSTER: return GetWeaponCharge(Weapon) == MAX_WEAPON_CHARGE ? 0.3f+frandom()*0.7f : 2.0f;
 			case SW_BAZOOKA: return 0.8f;
 			case SW_BOUNCER: return 0.8f;
 			default: return 0.0f;
@@ -1870,7 +1869,7 @@ const int IsProjectileBouncy(int Weapon)
 	if (GetStaticType(Weapon) == SW_BOUNCER)
 		return 9;
 	
-	if (GetStaticType(Weapon) == SW_CLUSTER && GetWeaponCharge(Weapon) == WeaponConstants::MAX_WEAPON_CHARGE)
+	if (GetStaticType(Weapon) == SW_CLUSTER && GetWeaponCharge(Weapon) == MAX_WEAPON_CHARGE)
 		return 2;
 	
 	return 0;

@@ -113,19 +113,6 @@ enum WeaponPart2 {
     PART2_MELEE4
 };
 
-namespace WeaponConstants {
-    constexpr int MAX_WEAPON_CHARGE = 15;
-    constexpr float BASE_PROJECTILE_SIZE = 1.0f;
-    constexpr float DROID_WALKER_SIZE = 1.0f;
-    constexpr float DROID_STAR_SIZE = 2.0f;
-    constexpr float GRENADE_SIZE = 2.5f;
-    constexpr float BAZOOKA_SIZE = 1.3f;
-    constexpr float CHARGE_MULTIPLIER = 0.25f;
-    constexpr float BASE_COST1 = 10.0f;
-    constexpr float BASE_COST2 = 20.0f;
-}
-
-
 #define WEAPON_GAME_SIZE 15
 
 inline bool IsWeapon(int Weapon) { return (Weapon & FLAG_WEAPON) != 0; }
