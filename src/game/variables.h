@@ -69,7 +69,6 @@ MACRO_CONFIG_INT(GfxNoclip, gfx_noclip, 0, 0, 1, CFGFLAG_CLIENT|CFGFLAG_SAVE, "D
 MACRO_CONFIG_INT(SvWarmup, sv_warmup, 0, 0, 0, CFGFLAG_SERVER, "Number of seconds to do warmup before round starts")
 MACRO_CONFIG_STR(SvMotd, sv_motd, 900, "", CFGFLAG_SERVER, "Message of the day to display for the clients")
 MACRO_CONFIG_INT(SvTeamdamage, sv_teamdamage, 0, 0, 1, CFGFLAG_SERVER, "Team damage")
-MACRO_CONFIG_STR(SvMaprotation, sv_maprotation, 768, "", CFGFLAG_SERVER, "Maps to rotate between")
 MACRO_CONFIG_INT(SvRoundsPerMap, sv_rounds_per_map, 1, 1, 100, CFGFLAG_SERVER, "Number of rounds on each map before rotating")
 MACRO_CONFIG_INT(SvRoundSwap, sv_round_swap, 1, 0, 1, CFGFLAG_SERVER, "Swap teams between rounds")
 MACRO_CONFIG_INT(SvPowerups, sv_powerups, 1, 0, 1, CFGFLAG_SERVER, "Allow powerups like ninja")
@@ -99,7 +98,6 @@ MACRO_CONFIG_INT(SvVoteKickBantime, sv_vote_kick_bantime, 5, 0, 1440, CFGFLAG_SE
 MACRO_CONFIG_INT(SvNull, sv_null, 0, 0, 100, CFGFLAG_SERVER, "does nothing")
 
 MACRO_CONFIG_INT(SvDebugMessages, sv_debugmessages, 0, 0, 1, CFGFLAG_SERVER, "Enable debug messages for crash fixing")
-MACRO_CONFIG_INT(SvLastSeenMessages, sv_lastseenmessages, 1, 0, 1, CFGFLAG_SERVER, "Enable 'player last seen' messages")
 
 MACRO_CONFIG_INT(SvEnableBuilding, sv_enablebuilding, 0, 0, 1, CFGFLAG_SERVER, "Enable building")
 MACRO_CONFIG_INT(SvRandomWeapons, sv_randomweapons, 0, 0, 1, CFGFLAG_SERVER, "Enable random weapons")
@@ -150,6 +148,7 @@ MACRO_CONFIG_INT(SvInfiniteGrenades, sv_infinitegrenades, 0, 0, 1, CFGFLAG_SERVE
 
 MACRO_CONFIG_INT(SvBroadcastLock, sv_broadcastlock, 3, 0, 5, CFGFLAG_SERVER, "Broadcast lock time (seconds)")
 
+MACRO_CONFIG_INT(SvRandomMaps, sv_random_maps, 1, 0, 1, CFGFLAG_SERVER, "Random select map in maps list (1 = on, 0 = off)")
 
 
 // debug

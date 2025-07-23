@@ -19,7 +19,6 @@
 #include "mapgen.h"
 #include "aiskin.h"
 #include "gamevote.h"
-#include "lastseen.h"
 
 #include <engine/localization.h>
 
@@ -94,6 +93,7 @@ class CGameContext : public IGameServer
 	static void ConEndRound(IConsole::IResult *pResult, void *pUserData);
 	static void ConVote(IConsole::IResult *pResult, void *pUserData);
 	static void ConchainSpecialMotdupdate(IConsole::IResult *pResult, void *pUserData, IConsole::FCommandCallback pfnCallback, void *pCallbackUserData);
+	static void ConMapsList(IConsole::IResult *pResult, void *pUserData);
 
 	CGameContext(int Resetting);
 	void Construct(int Resetting);
@@ -221,17 +221,20 @@ public:
 	void SendChat(int ClientID, int Team, const char *pText);
 	void SendEmoticon(int ClientID, int Emoticon);
 	void SendWeaponPickup(int ClientID, int Weapon);
-	void SendBroadcast(const char *pText, int ClientID, bool Lock = false, ...);
+	void SendBroadcast(const char *pText, int ClientID, bool Lock = false);
+	void SendBroadcastFormat(int ClientID, bool Lock, const char *pText, ...);
 	void SendGameVotes(int ClientID = -1);
 	
 	void ResetGameVotes();
 	
+	int m_WinnerVote;
 	CGameVote m_aGameVote[6];
 	int m_aPlayerGameVote[MAX_CLIENTS];
 	
 	void RegisterGameVote(int ClientID, int Vote);
 	void SendGameVoteStats();
 	const char *GetVoteWinnerConfig();
+	void CalculateVoteWinnerConfig();
 
 
 	//
@@ -256,7 +259,7 @@ public:
 
 	virtual void OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID);
 
-	virtual void GetAISkin(CAISkin *pAISkin, bool PVP, int Level = 1);
+	virtual void GetAISkin(CAISkin *pAISkin, bool PVP, int Level = 1, int WaveGroup = 0);
 	virtual void AddZombie();
 	virtual bool AIInputUpdateNeeded(int ClientID);
 	virtual void AIUpdateInput(int ClientID, int *Data);
@@ -294,8 +297,6 @@ public:
 	bool IsHuman(int ClientID);
 	
 	int m_BroadcastLockTick;
-
-	static CLastSeen m_LastSeen;
 
 	const char *Localize(const char *pText, int ClientID);
 };

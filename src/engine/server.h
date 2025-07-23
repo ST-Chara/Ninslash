@@ -5,6 +5,9 @@
 #include "kernel.h"
 #include "message.h"
 
+#include <base/tl/array.h>
+#include <string>
+
 class IServer : public IInterface
 {
 	MACRO_INTERFACE("server", 0)
@@ -69,7 +72,7 @@ public:
 	virtual bool DemoRecorder_IsRecording() = 0;
 	
 	virtual void AddZombie() = 0;
-	virtual void GetAISkin(class CAISkin *pAISkin, bool PVP, int Level) = 0;
+	virtual void GetAISkin(class CAISkin *pAISkin, bool PVP, int Level, int WaveGroup) = 0;
 
 	virtual void ResetGameVoting() = 0;
 	virtual bool GetGameVote(class CGameVote *pGameVote, int Players) = 0;
@@ -80,6 +83,9 @@ public:
 	
 	virtual char *GetMapName() = 0;
 	bool m_MapGenerated; // MapGen
+	char m_aMapInUse[64];
+
+	array<std::string> m_aMapLists;
 };
 
 class IGameServer : public IInterface
@@ -100,7 +106,7 @@ public:
 
 
 	virtual void AddZombie() = 0;
-	virtual void GetAISkin(class CAISkin *pAISkin, bool PVP, int Level) = 0;
+	virtual void GetAISkin(class CAISkin *pAISkin, bool PVP, int Level, int WaveGroup) = 0;
 	virtual bool AIInputUpdateNeeded(int ClientID) = 0;
 	virtual void AIUpdateInput(int ClientID, int *Data) = 0; // MAX_INPUT_SIZE
 	

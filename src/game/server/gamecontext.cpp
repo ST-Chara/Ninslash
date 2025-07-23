@@ -15,7 +15,7 @@
 #include "gamemodes/ball.h"
 #include "gamemodes/tdm.h"
 #include "gamemodes/ctf.h"
-#include "gamemodes/run.h"
+#include "gamemodes/invasion.h"
 #include "gamemodes/base.h"
 #include "gamemodes/roam.h"
 #include "gamemodes/texasrun.h"
@@ -423,13 +423,13 @@ bool CGameContext::AddBuilding(int Kit, vec2 Pos, int Owner)
 	
 	if (Kit == BUILDABLE_BARREL)
 	{
-		new CBuilding(&m_World, Pos, BUILDING_BARREL, TEAM_NEUTRAL);
+		new CBuilding(&m_World, Pos, BUILDING_BARREL+rand()%3, TEAM_NEUTRAL);
 		return true;
 	}
 
 	if (Kit == BUILDABLE_POWERBARREL)
 	{
-		new CBuilding(&m_World, Pos, BUILDING_POWERBARREL, TEAM_NEUTRAL);
+		new CBuilding(&m_World, Pos, BUILDING_POWERBARREL+rand()%2, TEAM_NEUTRAL);
 		return true;
 	}
 
@@ -703,6 +703,9 @@ void CGameContext::CreateProjectile(int DamageOwner, int Weapon, int Charge, vec
 	{
 		if (GetStaticType(Weapon) == SW_SHURIKEN || GetStaticType(Weapon) == SW_CHAINSAW || (IsStaticWeapon(Weapon) && (GetStaticType(Weapon) == SW_TOOL || GetStaticType(Weapon) == SW_CLAW)))
 		{
+			if (GetStaticType(Weapon) == SW_CHAINSAW)
+				Pos += normalize(Direction) * Charge*5.0f;
+				
 			CreateMeleeHit(DamageOwner, Weapon, Dmg, Pos, Direction, WeaponPos);
 			return;
 		}
@@ -1165,12 +1168,14 @@ void CGameContext::ResetGameVotes()
 		}
 	}
 	
+	/*
 	int InvLevel = 1;
 	
 	if (PlayerCount > 0)
 		InvLevel = TotalLevel / PlayerCount;
 
 	g_Config.m_SvMapGenLevel = InvLevel;
+	*/
 	
 	for (int i = 0; i < 6; i++)
 	{
@@ -1221,6 +1226,33 @@ void CGameContext::SendGameVoteStats()
 	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, -1);
 }
 
+void CGameContext::CalculateVoteWinnerConfig()
+{
+	int aVotes[6] = {0, 0, 0, 0, 0, 0};
+
+	// count
+	for (int i = 0; i < MAX_CLIENTS; i++)
+		if (m_aPlayerGameVote[i] >= 0 && m_aPlayerGameVote[i] < 6)
+			aVotes[m_aPlayerGameVote[i]]++;
+	
+	int Biggest = 0;
+	
+	for (int i = 0; i < 6; i++)
+		if (aVotes[i] > Biggest)
+			Biggest = aVotes[i];
+	
+	int j = 0;
+	int i = rand()%6;
+	
+	while (aVotes[i] < Biggest && j++ < 1000)
+	{
+		i = rand()%6;
+	}
+	
+	m_WinnerVote = i;
+}
+
+
 
 const char *CGameContext::GetVoteWinnerConfig()
 {
@@ -1252,8 +1284,11 @@ const char *CGameContext::GetVoteWinnerConfig()
 		char aBuf[128];
 		str_format(aBuf, sizeof(aBuf), "exec %s.cfg", m_aGameVote[i].m_aConfig);
 		Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "GetVoteWinnerConfig", aBuf);
-		const char * a = aBuf;
+		
+		return static_cast < const char * > (aBuf);
+		/*const char * a = aBuf;
 		return a;
+		*/
 		
 		//return static_cast < const char * > (aBuf);
 	}
@@ -1319,7 +1354,41 @@ void CGameContext::SendGameVotes(int ClientID)
 	*/
 }
 
-void CGameContext::SendBroadcast(const char *pText, int ClientID, bool Lock, ...)
+void CGameContext::SendBroadcast(const char *pText, int ClientID, bool Lock)
+{
+	CNetMsg_Sv_Broadcast Msg;
+	int Start = (ClientID < 0 ? 0 : ClientID);
+	int End = (ClientID < 0 ? MAX_CLIENTS : ClientID+1);
+	
+	// only for server demo record
+	if(ClientID < 0)
+	{
+		Msg.m_pMessage = pText;
+		Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NOSEND, -1);
+	}
+
+	for(int i = Start; i < End; i++)
+	{
+		if(m_apPlayers[i])
+		{
+			Msg.m_pMessage = Localize(pText, i);
+			Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, i);
+		}
+	}
+
+	if (ClientID < 0)
+	{
+		if (Lock)
+			m_BroadcastLockTick = Server()->Tick() + g_Config.m_SvBroadcastLock * Server()->TickSpeed();
+	}
+	else
+	{
+		str_copy(m_apPlayers[ClientID]->m_aBroadcast, Lock ? Localize(pText, ClientID) : "", sizeof(m_apPlayers[ClientID]->m_aBroadcast));
+		m_apPlayers[ClientID]->m_BroadcastLockTick = Lock ? Server()->Tick() : 0;
+	}
+}
+
+void CGameContext::SendBroadcastFormat(int ClientID, bool Lock, const char *pText, ...)
 {
 	CNetMsg_Sv_Broadcast Msg;
 	int Start = (ClientID < 0 ? 0 : ClientID);
@@ -1604,11 +1673,12 @@ void CGameContext::OnTick()
 	// copy tuning
 	m_World.m_Core.m_Tuning = m_Tuning;
 	m_World.m_Core.ClearImpacts();
+	m_World.m_Core.ClearDroids();
 	m_World.Tick();
 
 	//if(world.paused) // make sure that the game object always updates
 	m_pController->Tick();
-
+	
 	for(int i = 0; i < MAX_CLIENTS; i++)
 	{
 		if(m_apPlayers[i])
@@ -1760,9 +1830,9 @@ void CGameContext::AddZombie()
 	Server()->AddZombie();
 }
 
-void CGameContext::GetAISkin(CAISkin *pAISkin, bool PVP, int Level)
+void CGameContext::GetAISkin(CAISkin *pAISkin, bool PVP, int Level, int WaveGroup)
 {
-	Server()->GetAISkin(pAISkin, PVP, Level);
+	Server()->GetAISkin(pAISkin, PVP, Level, WaveGroup);
 }
 
 
@@ -1788,18 +1858,14 @@ void CGameContext::OnClientEnter(int ClientID)
 	str_format(aBuf, sizeof(aBuf), "team_join player='%d:%s' team=%d", ClientID, Server()->ClientName(ClientID), m_apPlayers[ClientID]->GetTeam());
 	Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
 
-	m_LastSeen.SendLastSeenMsg(this, ClientID);
-
 	if (m_pController->IsCoop() && g_Config.m_SvMapGen)
 	{
-		char aBuf[256];
 		if (!g_Config.m_SvInvFails)
-			str_format(aBuf, sizeof(aBuf), Localize("Level %d", ClientID), g_Config.m_SvMapGenLevel);
+			SendBroadcastFormat(ClientID, false, "Level %d", g_Config.m_SvMapGenLevel);
 		else if (g_Config.m_SvInvFails == 1)
-			str_format(aBuf, sizeof(aBuf), Localize("Level %d - Second try", ClientID), g_Config.m_SvMapGenLevel);
+			SendBroadcastFormat(ClientID, false, "Level %d - Second try", g_Config.m_SvMapGenLevel);
 		else
-			str_format(aBuf, sizeof(aBuf), Localize("Level %d - Last chance", ClientID), g_Config.m_SvMapGenLevel);
-		SendBroadcast(aBuf, ClientID);
+			SendBroadcastFormat(ClientID, false, "Level %d - Last chance", g_Config.m_SvMapGenLevel);
 	}
 	
 	m_VoteUpdate = true;
@@ -1922,7 +1988,6 @@ bool CGameContext::Shop(CPlayer *pPlayer, int Slot, bool AI)
 
 void CGameContext::OnClientDrop(int ClientID, const char *pReason)
 {
-	m_LastSeen.OnClientDrop(this, ClientID);
 	AbortVoteKickOnDisconnect(ClientID);
 	m_apPlayers[ClientID]->OnDisconnect(pReason);
 	delete m_apPlayers[ClientID];
@@ -2944,7 +3009,7 @@ void CGameContext::OnConsoleInit()
 	Console()->Register("vote", "r", CFGFLAG_SERVER, ConVote, this, "Force a vote to yes/no");
 	
 	Console()->Register("end_round", "", CFGFLAG_SERVER, ConEndRound, this, "Ends the current round");
-	
+
 
 	//Console()->Chain("sv_motd", ConchainSpecialMotdupdate, this);
 }
@@ -3049,7 +3114,7 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 	else if(str_comp(g_Config.m_SvGametype, "base") == 0)
 		m_pController = new CGameControllerBase(this);
 	else if(str_comp(g_Config.m_SvGametype, "coop") == 0)
-		m_pController = new CGameControllerCoop(this);
+		m_pController = new CGameControllerInvasion(this);
 	else if(str_comp(g_Config.m_SvGametype, "ball") == 0)
 		m_pController = new CGameControllerBall(this);
 	else if(str_comp(g_Config.m_SvGametype, "roam") == 0)
@@ -3159,9 +3224,9 @@ void CGameContext::OnShutdown()
 
 void CGameContext::OnSnap(int ClientID)
 {
-	if (m_apPlayers[ClientID] && m_apPlayers[ClientID]->m_IsBot)
+	if (ClientID != -1 && m_apPlayers[ClientID] && m_apPlayers[ClientID]->m_IsBot)
 		return;
-	
+
 	// add tuning to demo
 	CTuningParams StandardTuning;
 	if(ClientID == -1 && Server()->DemoRecorder_IsRecording() && mem_comp(&StandardTuning, &m_Tuning, sizeof(CTuningParams)) != 0)

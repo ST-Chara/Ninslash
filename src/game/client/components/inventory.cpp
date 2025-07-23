@@ -152,10 +152,6 @@ void CInventory::InventoryRoll(bool All)
 	}
 }
 
-void CInventory::ConInventoryRoll_All(IConsole::IResult *pResult, void *pUserData)
-{
-	((CInventory *)pUserData)->InventoryRoll(true);
-}
 
 void CInventory::OnConsoleInit()
 {
@@ -163,7 +159,6 @@ void CInventory::OnConsoleInit()
 	Console()->Register("+inventory", "", CFGFLAG_CLIENT, ConKeyInventory, this, "Open inventory");
 	Console()->Register("+buildmenu", "", CFGFLAG_CLIENT, ConKeyBuildmenu, this, "Open build menu");
 	Console()->Register("+inventoryroll", "", CFGFLAG_CLIENT, ConInventoryRoll, this, "Roll inventory");
-	Console()->Register("+inventoryroll_all", "", CFGFLAG_CLIENT, ConInventoryRoll_All, this, "Roll inventory(All)");
 }
 
 void CInventory::OnReset()
@@ -615,12 +610,14 @@ void CInventory::DrawInventory(vec2 Pos, vec2 Size)
 					
 					if (Level > 0 && !(IsStaticWeapon(w) && GetStaticType(w) == SW_UPGRADE))
 					{
-						if (Level >= 5)
+						if (Level > 7)
+							Level -= 1;
+						if (Level > 5)
 							Level -= 1;
 
 						Graphics()->QuadsBegin();
 						Graphics()->SetColor(1.0f, 1.0f, 1.0f, s_Fade*1.0f);
-						RenderTools()->SelectSprite(SPRITE_WEAPONRANK1+min(Level-1, 5));
+						RenderTools()->SelectSprite(SPRITE_WEAPONRANK1+min(Level-1, 6));
 						RenderTools()->DrawSprite(p2.x, p2.y-s2*1.6f, s2*4.0f);
 						Graphics()->QuadsEnd();
 					}

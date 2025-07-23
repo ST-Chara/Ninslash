@@ -191,42 +191,14 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 	}
 	else
 	{
-		//m_apWeapon[0] = GameServer()->NewWeapon(GetStaticWeapon(SW_CLUSTER));
-		//m_apWeapon[1] = GameServer()->NewWeapon(GetChargedWeapon(GetModularWeapon(4, 2), 10));
-		//m_apWeapon[1] = GameServer()->NewWeapon(GetChargedWeapon(GetModularWeapon(1, 3), 15));
+		//m_apWeapon[0] = GameServer()->NewWeapon(GetChargedWeapon(GetStaticWeapon(SW_CHAINSAW), 5));
 	}
-	
-	//m_apWeapon[0] = GameServer()->NewWeapon(GetModularWeapon(5, 9));
-	//m_apWeapon[1] = GameServer()->NewWeapon(GetModularWeapon(5, 9));
-	//m_apWeapon[2] = GameServer()->NewWeapon(GetModularWeapon(6, 9));
-
-	/*
-	m_apWeapon[0] = GameServer()->NewWeapon(GetChargedWeapon(GetModularWeapon(1, 2), 10));
-	*/
-	
-	//m_apWeapon[2] = GameServer()->NewWeapon(GetStaticWeapon(SW_ELECTROWALL));
-	//m_apWeapon[3] = GameServer()->NewWeapon(GetStaticWeapon(SW_AREASHIELD));
-	
-	/*
-	int n = 0;
-	//m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_SHIELD));
-	//m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_INVIS));
-	//m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_UPGRADE));
-	m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_BAZOOKA));
-	m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_CHAINSAW));
-	m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_BOUNCER));
-	m_apWeapon[n++] = GameServer()->NewWeapon(GetStaticWeapon(SW_FLAMER));
-	*/
 	
 	/*
 	m_apWeapon[2] = GameServer()->NewWeapon(GetStaticWeapon(SW_BOUNCER));
-	m_apWeapon[3] = GameServer()->NewWeapon(GetModularWeapon(6, 6));
+	m_apWeapon[3] = GameServer()->NewWeapon(GetChargedWeapon(GetModularWeapon(6, 9), 4));
 	*/
 	
-	//m_apWeapon[1] = GameServer()->NewWeapon(GetStaticWeapon(SW_BALL));
-	//m_apWeapon[2] = GameServer()->NewWeapon(GetStaticWeapon(SW_MASK5));
-	//m_apWeapon[1] = GameServer()->NewWeapon(GetModularWeapon(5, 6));
-	//m_apWeapon[3] = GameServer()->NewWeapon(GetChargedWeapon(GetModularWeapon(6, 9), 4));
 	
 	GiveStartWeapon();
 	SendInventory();
@@ -339,7 +311,7 @@ void CCharacter::SaveData()
 }
 
 	
-bool CCharacter::GiveWeapon(class CWeapon *pWeapon)
+bool CCharacter::GiveWeapon(CWeapon *pWeapon)
 {
 	if (!pWeapon)
 		return false;
@@ -532,8 +504,8 @@ void CCharacter::DropItem(int Slot, vec2 Pos)
 	
 	if (UpgradeTurret(Pos, vec2(Pos.x > m_Pos.x ? -1 : 1, 0), Slot))
 	{
-		m_apWeapon[Slot] = 0;
-		SendInventory();
+		//m_apWeapon[Slot] = 0;
+		//SendInventory();
 		return;
 	}
 	
@@ -844,7 +816,7 @@ bool CCharacter::PickWeapon(CWeapon *pWeapon)
 				if (Weapons > 1.0f)
 					WeaponLevel /= Weapons;
 				
-				if (GetWeaponCharge(w) < WeaponLevel && Weapons > 0.0f && GetWeaponCharge(w) < WeaponMaxLevel(w))
+				if (GetWeaponCharge(w) < WeaponLevel && Weapons > 0.0f && GetWeaponCharge(w) <= WeaponMaxLevel(w))
 					Valid = false;
 			}
 		}
@@ -853,7 +825,7 @@ bool CCharacter::PickWeapon(CWeapon *pWeapon)
 		{
 			if (GetChargedWeapon(GetWeaponType(i), 0) == GetChargedWeapon(pWeapon->GetWeaponType(), 0) && 
 				GetWeaponCharge(GetWeaponType(i)) >= GetWeaponCharge(pWeapon->GetWeaponType()) && 
-				GetStaticType(GetWeaponType(i)) != SW_UPGRADE && GetStaticType(GetWeaponType(i)) != SW_RESPAWNER)
+				GetStaticType(GetWeaponType(i)) != SW_UPGRADE && (GetStaticType(GetWeaponType(i)) != SW_RESPAWNER))
 				Valid = false;
 		}
 	}
@@ -862,6 +834,9 @@ bool CCharacter::PickWeapon(CWeapon *pWeapon)
 	
 	if (GetStaticType(w) == SW_UPGRADE)
 		Valid = true;
+	
+	if (GetStaticType(w) == SW_RESPAWNER && GameServer()->m_pController->CountPlayers(0) < 2)
+		Valid = false;
 	
 	if (Valid)
 	{
@@ -898,7 +873,7 @@ bool CCharacter::UpgradeTurret(vec2 Pos, vec2 Dir, int Slot)
 	float CheckRange = 48.0f;
 	CBuilding *pNear = NULL;
 	CBuilding *apEnts[16];
-	int Num = GameServer()->m_World.FindEntities(Pos+vec2(0, -20), 40, (CEntity**)apEnts, 16, CGameWorld::ENTTYPE_BUILDING);
+	int Num = GameServer()->m_World.FindEntities(Pos+vec2(0, -20), 60, (CEntity**)apEnts, 16, CGameWorld::ENTTYPE_BUILDING);
 
 	// check for turret stands
 	for (int i = 0; i < Num; ++i)
@@ -915,6 +890,12 @@ bool CCharacter::UpgradeTurret(vec2 Pos, vec2 Dir, int Slot)
 	// transform stand to turret
 	if (pNear)
 	{
+		int Cost = GetWeapon(Slot)->GetPowerLevel()+1;
+		if (m_Kits < Cost)
+			return false;
+		
+		m_Kits -= Cost;
+		
 		vec2 p = pNear->m_Pos;
 		GameServer()->m_World.DestroyEntity(pNear);
 		
@@ -922,8 +903,11 @@ bool CCharacter::UpgradeTurret(vec2 Pos, vec2 Dir, int Slot)
 		if (!GameServer()->m_pController->IsTeamplay())
 			Team = GetPlayer()->GetCID();
 		
-		GetWeapon(Slot)->SetOwner(GetPlayer()->GetCID());
-		CTurret *pTurret = new CTurret(&GameServer()->m_World, p, Team, GetWeapon(Slot));
+		// clone the weapon in use and link it to turret
+		CWeapon *pWeapon = GameServer()->NewWeapon(GetWeapon(Slot)->GetWeaponType());
+		
+		pWeapon->SetOwner(GetPlayer()->GetCID());
+		CTurret *pTurret = new CTurret(&GameServer()->m_World, p, Team, pWeapon);
 		pTurret->SetAngle(Dir);
 				
 		// sound
@@ -953,8 +937,8 @@ void CCharacter::DropWeapon()
 	{
 		if (UpgradeTurret(m_Pos, -Direction))
 		{
-			m_apWeapon[m_WeaponSlot] = 0;
-			SendInventory();
+			//m_apWeapon[m_WeaponSlot] = 0;
+			//SendInventory();
 			return;
 		}
 	}
@@ -2237,13 +2221,16 @@ bool CCharacter::TakeDamage(int From, int Weapon, int Dmg, vec2 Force, vec2 Pos)
 	float Flame = WeaponFlameAmount(Weapon);
 	float Electro = WeaponElectroAmount(Weapon);
 
+	// damage reduction for invasion
+	if (Dmg > 0 && GameServer()->m_pController->IsCoop() && !m_IsBot)
+		Dmg = max(1, Dmg/2);
 	
 	if (From == m_pPlayer->GetCID())
 	{
 		if (GameServer()->m_pController->IsCoop())
-			Dmg = max(1, Dmg/5);
+			Dmg = max(1, Dmg/4);
 		else
-			Dmg = max(1, Dmg/2);
+			Dmg = max(1, Dmg/4);
 	}
 	
 	if (From >= 0)
