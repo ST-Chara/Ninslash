@@ -428,13 +428,13 @@ Map:
 == 地图:
 
 Mask of melee
-== 混沌面具
+== 战神面具
 
 Mask of plenty
 == 丰盛面具
 
 Mask of protection
-== 保护面具
+== 护体面具
 
 Mask of regeneration
 == 恢复面具
@@ -500,7 +500,7 @@ Nickname
 == 昵称
 
 Ninslash %s is out! Download it at www.ninslash.com!
-== Ninslash %s 更新了！请访问ninslash.teeworlds.fun下载!
+== Ninslash %s 更新了！请访问 www.ninslash.com 下载!
 
 No
 == 否
@@ -515,7 +515,7 @@ No servers match your filter criteria
 == 没有任何服务器匹配你的过滤器
 
 Objective
-== 任务
+== 任务目标
 
 Ok
 == 确定
@@ -560,7 +560,7 @@ Please balance teams!
 == 请平衡团队人数!
 
 Power barrel
-== 能量结界
+== 储电桶
 
 Prev. weapon
 == 上一个武器
@@ -632,7 +632,7 @@ Respawn
 == 重生
 
 Respawn device
-== 复活科技
+== 复活器
 
 Rifle
 == 激光枪
@@ -668,7 +668,7 @@ Server details
 == 服务器详细信息
 
 Server filter
-== 服务器过滤器
+== 服务器筛选
 
 Server info
 == 服务器信息
@@ -683,7 +683,7 @@ Settings
 == 设置
 
 Shield generator
-== 防护盾生成器
+== 能量护盾发生器
 
 Shotgun
 == 霰弹枪
@@ -875,7 +875,7 @@ Warmup
 == 热身
 
 Weapon upgrade
-== 武器升级
+== 升级套件
 
 Weapons & Items
 == 武器 & 物品

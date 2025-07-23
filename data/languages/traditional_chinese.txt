@@ -428,13 +428,13 @@ Map:
 == 地圖:
 
 Mask of melee
-== 混沌面具
+== 戰神面具
 
 Mask of plenty
 == 豐盛面具
 
 Mask of protection
-== 保護面具
+== 護身面具
 
 Mask of regeneration
 == 恢複面具
@@ -500,7 +500,7 @@ Nickname
 == 暱稱
 
 Ninslash %s is out! Download it at www.ninslash.com!
-== Ninslash %s 更新了！請訪問ninslash.teeworlds.fun下載!
+== Ninslash %s 更新了！請訪問 www.ninslash.com 下載!
 
 No
 == 否
@@ -560,7 +560,7 @@ Please balance teams!
 == 請平衡糰隊人數!
 
 Power barrel
-== 能量結界
+== 儲電罐
 
 Prev. weapon
 == 上一個武器
