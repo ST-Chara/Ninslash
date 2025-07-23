@@ -15,12 +15,12 @@ jobs:
           package-full-file: ninslash-linux_x86_64-release.tar.xz
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Checkout bam
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: matricks/bam
         ref: 8cd08744c37666830d439ab54016c9d228c63b68
