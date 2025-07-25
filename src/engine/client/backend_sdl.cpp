@@ -362,7 +362,6 @@ void CCommandProcessorFragment_OpenGL::Cmd_CreateTextureBuffer(const CCommandBuf
 	}
 	
 	dbg_msg("render", "creating texture buffers");
-	glewInit();
 	dbg_msg("render", "glew ready");
 	
 	int Width = pCommand->m_Width;
