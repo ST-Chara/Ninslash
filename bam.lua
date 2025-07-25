@@ -15,12 +15,18 @@ config:Add(FreeType.OptFind("freetype", true))
 config:Add(GLEW.OptFind("glew", true))
 config:Finalize("config.lua")
 
+python_in_path = ExecuteSilent("python -V") == 0
+
 -- data compiler
-function Script(name)
+function Python(name)
 	if family == "windows" then
-		return str_replace(name, "/", "\\")
+		name = str_replace(name, "/", "\\")
+		if not python_in_path then
+			-- Python is usually registered for .py files in Windows
+			return name
+		end
 	end
-	return "python3 " .. name
+	return "python " .. name
 end
 
 function CHash(output, ...)
@@ -29,7 +35,7 @@ function CHash(output, ...)
 	output = Path(output)
 
 	-- compile all the files
-	local cmd = Script("scripts/cmd5.py") .. " "
+	local cmd = Python("scripts/cmd5.py") .. " "
 	for index, inname in ipairs(inputs) do
 		cmd = cmd .. Path(inname) .. " "
 	end
@@ -75,7 +81,7 @@ function Dat2c(datafile, sourcefile, arrayname)
 	AddJob(
 		sourcefile,
 		"dat2c " .. PathFilename(sourcefile) .. " = " .. PathFilename(datafile),
-		Script("scripts/dat2c.py").. "\" " .. sourcefile .. " " .. datafile .. " " .. arrayname
+		Python("scripts/dat2c.py").. "\" " .. sourcefile .. " " .. datafile .. " " .. arrayname
 	)
 	AddDependency(sourcefile, datafile)
 	return sourcefile
@@ -86,8 +92,8 @@ function ContentCompile(action, output)
 	AddJob(
 		output,
 		action .. " > " .. output,
-		--Script("datasrc/compile.py") .. "\" ".. Path(output) .. " " .. action
-		Script("datasrc/compile.py") .. " " .. action .. " > " .. Path(output)
+		--Python("datasrc/compile.py") .. "\" ".. Path(output) .. " " .. action
+		Python("datasrc/compile.py") .. " " .. action .. " > " .. Path(output)
 	)
 	AddDependency(output, Path("datasrc/content.py")) -- do this more proper
 	AddDependency(output, Path("datasrc/network.py"))

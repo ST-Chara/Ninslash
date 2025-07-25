@@ -8,17 +8,15 @@ SDL3 = {
             option.use_winlib = 0
             option.lib_path = nil
             
-            if ExecuteSilent("pkg-config sdl3") == 0 then
-                option.value = true
-                option.use_pkgconfig = true
-            end
-            
             if platform == "win32" then
                 option.value = true
                 option.use_winlib = 32
             elseif platform == "win64" then
                 option.value = true
                 option.use_winlib = 64
+            elseif ExecuteSilent("pkg-config") > 0  and ExecuteSilent("pkg-config sdl3") == 0 then
+                option.value = true
+                option.use_pkgconfig = true
             end
         end
         
@@ -27,14 +25,13 @@ SDL3 = {
                 settings.cc.flags:Add("`pkg-config --cflags sdl3`")
                 settings.link.flags:Add("`pkg-config --libs sdl3`")
             elseif option.use_winlib > 0 then
-                settings.cc.includes:Add(SDL.basepath .. "/include")
+                settings.cc.includes:Add(SDL3.basepath .. "/include")
                 if option.use_winlib == 32 then
-                    settings.link.libpath:Add(SDL.basepath .. "/windows/lib32")
+                    settings.link.libpath:Add(SDL3.basepath .. "/lib32")
                 else
-                    settings.link.libpath:Add(SDL.basepath .. "/windows/lib64")
+                    settings.link.libpath:Add(SDL3.basepath .. "/lib64")
                 end
                 settings.link.libs:Add("SDL3")
-                settings.link.libs:Add("SDL3main")
             end
         end
         

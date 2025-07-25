@@ -942,9 +942,7 @@ int CGraphicsBackend_SDL_OpenGL::Init(const char *pName, int *Width, int *Height
 		"only one of borderless and fullscreen may be activated at the same time");
 
 	// disable desktop auto scaling on windows
-	#ifdef CONF_FAMILY_WINDOWS
-		SetProcessDPIAware();
-	#endif
+	SDLFlags |= SDL_WINDOW_HIGH_PIXEL_DENSITY;
 
 	// CreateWindow apparently doesn't care about the window position in fullscreen
 	m_pWindow = SDL_CreateWindow(
