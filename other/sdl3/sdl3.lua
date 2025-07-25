@@ -8,7 +8,7 @@ SDL3 = {
             option.use_winlib = 0
             option.lib_path = nil
             
-            if ExecuteSilent("pkg-config sdl3") == 0 then
+            if ExecuteSilent("pkg-config") > 0  and ExecuteSilent("pkg-config sdl3") == 0 then
                 option.value = true
                 option.use_pkgconfig = true
             end
