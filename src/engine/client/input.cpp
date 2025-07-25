@@ -1,9 +1,4 @@
-
-#if defined(CONF_FAMILY_WINDOWS)
-#include <SDL.h>
-#else
 #include <SDL3/SDL.h>
-#endif
 #include <base/math.h>
 #include <base/system.h>
 #include <engine/shared/config.h>

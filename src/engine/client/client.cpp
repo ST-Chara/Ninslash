@@ -51,11 +51,7 @@
 	#include <windows.h>
 #endif
 
-#if defined(CONF_FAMILY_WINDOWS)
-#include <SDL.h>
-#else
 #include <SDL3/SDL.h>
-#endif
 #ifdef main
 #undef main
 #endif

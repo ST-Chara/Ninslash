@@ -6,11 +6,7 @@
 
 #include <engine/shared/config.h>
 
-#if defined(CONF_FAMILY_WINDOWS)
-#include <SDL.h>
-#else
 #include <SDL3/SDL.h>
-#endif
 
 #include "gamepad.h"
 
