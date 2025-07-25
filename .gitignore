@@ -27,8 +27,8 @@ other/icons/*.res
 /versionsrv*
 Thumbs.db
 build.bat
-SDL3.dll
-glew32.dll
+/SDL3.dll
+/glew32.dll
 notepad.workspace
 
 /.vscode
