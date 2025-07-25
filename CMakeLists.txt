@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.11)
 
 file(STRINGS src/game/version.h VERSION_LINE
   LIMIT_COUNT 1
@@ -243,7 +243,7 @@ find_package(Freetype)
 find_package(Git)
 find_package(Pnglite)
 find_package(Python3)
-find_package(SDL2)
+find_package(SDL3)
 find_package(Threads)
 find_package(Wavpack)
 find_package(GLEW)
@@ -290,7 +290,7 @@ endif()
 show_dependency_status("Freetype" FREETYPE)
 show_dependency_status("Pnglite" PNGLITE)
 show_dependency_status("Python3" PYTHON3)
-show_dependency_status("SDL2" SDL2)
+show_dependency_status("SDL3" SDL3)
 show_dependency_status("Wavpack" WAVPACK)
 show_dependency_status("Zlib" ZLIB)
 show_dependency_status("GLEW" GLEW)
@@ -303,8 +303,8 @@ if(CLIENT AND NOT(FREETYPE_FOUND))
   message(SEND_ERROR "You must install Freetype to compile the Ninslash client")
 endif()
 
-if(CLIENT AND NOT(SDL2_FOUND))
-  message(SEND_ERROR "You must install SDL2 to compile the Ninslash client")
+if(CLIENT AND NOT(SDL3_FOUND))
+  message(SEND_ERROR "You must install SDL3 to compile the Ninslash client")
 endif()
 
 if(CLIENT AND NOT(GLEW_FOUND))
@@ -352,7 +352,7 @@ set(DEP_JSON $<TARGET_OBJECTS:json>)
 file(COPY data DESTINATION .)
 set(COPY_FILES
   ${FREETYPE_COPY_FILES}
-  ${SDL2_COPY_FILES}
+  ${SDL3_COPY_FILES}
   autoexec.cfg
   storage.cfg
 )
@@ -714,7 +714,7 @@ if(CLIENT)
     ${LIBS}
     ${FREETYPE_LIBRARIES}
     ${PNGLITE_LIBRARIES}
-    ${SDL2_LIBRARIES}
+    ${SDL3_LIBRARIES}
     ${WAVPACK_LIBRARIES}
     ${PLATFORM_CLIENT_LIBS}
     ${GLEW_LIBRARIES}
@@ -741,7 +741,7 @@ if(CLIENT)
   target_include_directories(${TARGET_CLIENT} PRIVATE
     ${FREETYPE_INCLUDE_DIRS}
     ${PNGLITE_INCLUDE_DIRS}
-    ${SDL2_INCLUDE_DIRS}
+    ${SDL3_INCLUDE_DIRS}
     ${WAVPACK_INCLUDE_DIRS}
     ${GLEW_INCLUDE_DIRS}
   )

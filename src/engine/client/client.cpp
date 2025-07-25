@@ -1738,7 +1738,7 @@ void CClient::Run()
 
 	// init SDL
 	{
-		if(SDL_Init(0) < 0)
+		if(!SDL_Init(0))
 		{
 			dbg_msg("client", "unable to init SDL base: %s", SDL_GetError());
 			return;
