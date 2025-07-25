@@ -11,9 +11,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         include:
-        - name: "Ubuntu-Latest x86_64"
-          os: ubuntu-latest
-          package-full-file: ninslash-linux_x86_64-release.tar.xz
+        #- name: "Ubuntu-Latest x86_64"
+        #  os: ubuntu-latest
+        #  package-full-file: ninslash-linux_x86_64-release.tar.xz
         - name: "Windows"
           os: windows-latest
           package-full-file: ninslash-windows_x64-release.tar.xz
@@ -37,39 +37,40 @@ jobs:
         cd bam
         ./make_win64_msvc.bat
 
-    - name: Checkout SDL3
-      uses: actions/checkout@v4
-      with:
-        repository: libsdl-org/SDL
-        ref: 68bfcb6c5419f51104e74e72ea0f8d405a4615b0
-        path: ./SDL
+    #- name: Checkout SDL3
+    #  if: contains(matrix.os, 'ubuntu')
+    #  uses: actions/checkout@v4
+    #  with:
+    #    repository: libsdl-org/SDL
+    #    ref: 68bfcb6c5419f51104e74e72ea0f8d405a4615b0
+    #    path: ./SDL
 
-    - name: Prepare Linux
-      if: contains(matrix.os, 'ubuntu')
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install build-essential git cmake clang libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev libegl1-mesa-dev libibus-1.0-dev libdbus-1-dev libudev-dev libinput-dev libts-dev libjpeg-dev libwebp-dev -y
-        sudo apt-get install bam python3 libglew-dev libfreetype6-dev -y
-        cd SDL
-        cmake . -DCMAKE_BUILD_TYPE=Release
-        sudo make install
+    #- name: Prepare Linux
+    #  if: contains(matrix.os, 'ubuntu')
+    #  run: |
+    #    sudo apt-get update -y
+    #    sudo apt-get install build-essential git cmake clang libasound2-dev libpulse-dev libaudio-dev libjack-dev libsndio-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev libegl1-mesa-dev libibus-1.0-dev libdbus-1-dev libudev-dev libinput-dev libts-dev libjpeg-dev libwebp-dev -y
+    #    sudo apt-get install bam python3 libglew-dev libfreetype6-dev -y
+    #    cd SDL
+    #    cmake . -DCMAKE_BUILD_TYPE=Release
+    #    sudo make install
 
-    - name: Build in debug mode(Ubuntu)
-      if: contains(matrix.os, 'ubuntu')
-      run: bam debug
+    #- name: Build in debug mode(Ubuntu)
+    #  if: contains(matrix.os, 'ubuntu')
+    #  run: bam debug
 
-    - name: Build in release mode(Ubuntu)
-      if: contains(matrix.os, 'ubuntu')
-      run: bam release
+    #- name: Build in release mode(Ubuntu)
+    #  if: contains(matrix.os, 'ubuntu')
+    #  run: bam release
 
     - name: Build in release mode(Windows)
       if: contains(matrix.os, 'Windows')
       run: ./bam/bam release
 
-    - name: Package Release
-      if: contains(matrix.os, 'ubuntu')
-      run: |
-        tar -cf ${{ matrix.package-full-file }} cfg/ data/ ninslash ninslash_srv autoexec.cfg license.txt readme.md storage.cfg
+    #- name: Package Release
+    #  if: contains(matrix.os, 'ubuntu')
+    #  run: |
+    #    tar -cf ${{ matrix.package-full-file }} cfg/ data/ ninslash ninslash_srv autoexec.cfg license.txt readme.md storage.cfg
 
     - name: Package Release
       if: contains(matrix.os, 'Windows')
