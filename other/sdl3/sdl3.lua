@@ -33,8 +33,6 @@ SDL3 = {
                 else
                     settings.link.libpath:Add(SDL3.basepath .. "/windows/lib64")
                 end
-                settings.link.libs:Add("SDL3")
-                settings.link.libs:Add("SDL3main")
             end
         end
         
