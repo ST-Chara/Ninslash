@@ -1,4 +1,8 @@
+#if defined(CONF_FAMILY_WINDOWS)
+#include <SDL.h>
+#else
 #include <SDL3/SDL.h>
+#endif
 #include <GL/glew.h>
 #include <base/detect.h>
 #include <base/math.h>

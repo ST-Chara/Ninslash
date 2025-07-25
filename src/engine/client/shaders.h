@@ -1,9 +1,13 @@
 #ifndef ENGINE_CLIENT_SHADERS_H
 #define ENGINE_CLIENT_SHADERS_H
 
+#if defined(CONF_FAMILY_WINDOWS)
+#include <SDL.h>
+#include <SDL_opengl.h>
+#else
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
- 
+#endif
 
 typedef struct {
 	GLhandleARB program;

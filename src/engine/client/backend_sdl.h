@@ -3,8 +3,13 @@
 #include <map>
 
 #include "graphics_threaded.h"
+#if defined(CONF_FAMILY_WINDOWS)
+#include <SDL.h>
+#include <SDL_opengl.h>
+#else
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
+#endif
 
 
 // Use SDL semaphores on Mac OS X, because (unnamed) posix semaphores are not available
