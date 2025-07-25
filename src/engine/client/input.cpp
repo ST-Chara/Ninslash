@@ -1,6 +1,6 @@
 
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include <base/math.h>
 #include <base/system.h>

@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <GL/glew.h>
 #include <base/detect.h>
 #include <base/math.h>
