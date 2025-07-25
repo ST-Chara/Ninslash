@@ -65,10 +65,10 @@ Area Shield
 == 小型防御盾
 
 As this is the first time you launch the game, please enter your nick name below. It's recommended that you check the settings to adjust them to your liking before joining a server.
-== 这是你第一次执行游戏, 所以请在下面输入你的昵称. 建议你在进入一个服务器之前, 先确认一下设置是否符合你的习惯.
+== 这是你第一次运行游戏，所以请在下面输入你的昵称。建议你在进入服务器前，先确认一下设置是否符合你的习惯.
 
 Automatically record demos
-== 自动记录录像
+== 自动记录回放
 
 Automatically take game over screenshot
 == 自动截取游戏结束画面
@@ -158,7 +158,7 @@ Count players only
 == 只统计玩家数
 
 Country
-== 国家/地区
+== 地区
 
 Crc:
 == Crc校验码:
@@ -179,16 +179,16 @@ Delete
 == 删除
 
 Delete demo
-== 删除录像
+== 删除回放
 
 Demo details
-== 录像详细信息
+== 回放详细信息
 
 Demofile: %s
-== 录像: %s
+== 回放: %s
 
 Demos
-== 录像
+== 回放
 
 Disconnect
 == 断开连接
@@ -242,7 +242,7 @@ Error
 == 错误
 
 Error loading demo
-== 读取录像错误
+== 读取回放错误
 
 Eyes
 == 眼睛部分
@@ -476,7 +476,7 @@ Multi framebuffering (requires restart)
 == 多帧缓冲（需要重新启动游戏）
 
 Mute when not active
-== 不活动的时候静音
+== 失去焦点时禁音
 
 Name
 == 名字
@@ -500,7 +500,7 @@ Nickname
 == 昵称
 
 Ninslash %s is out! Download it at www.ninslash.com!
-== Ninslash %s 更新了！请访问 www.ninslash.com 下载!
+== Ninslash %s 更新了！去访问 www.ninslash.com 下载！
 
 No
 == 否
@@ -548,7 +548,7 @@ Player
 == 玩家
 
 Player country:
-== 包含此国旗的玩家:
+== 包含此地区的玩家:
 
 Player options
 == 玩家选项
@@ -587,7 +587,7 @@ Reason:
 == 理由:
 
 Record demo
-== 录制录像
+== 录制回放
 
 Red
 == 红色
@@ -617,7 +617,7 @@ Rename
 == 重命名
 
 Rename demo
-== 重命名录像
+== 重命名回放
 
 Repair tool
 == 修复工具
@@ -797,16 +797,16 @@ The audio device couldn't be initialised.
 == 无法初始化音频设备。
 
 The server is running a non-standard tuning on a pure game type.
-== 此服务器运行着经过调整的非标准游戏类型.
+== 此服务器运行着经过调整的非标准游戏类型。
 
 There's an unsaved map in the editor, you might want to save it before you quit the game.
-== 编辑器中的地图尚未保存, 或许你应该在退出游戏之前保存一下.
+== 编辑器中的地图尚未保存，或许你应该在退出游戏之前保存一下。
 
 Threaded rendering
-== 渲染线程
+== 线程化渲染
 
 Threaded sound loading
-== 音效线程加载中
+== 线程化音效加载
 
 Time limit
 == 时间限制
@@ -830,10 +830,10 @@ UI Color
 == 界面颜色
 
 Unable to delete the demo
-== 无法删除这个录像
+== 无法删除这个回放
 
 Unable to rename the demo
-== 无法重命名这个录像
+== 无法重命名这个回放
 
 Use sounds
 == 开启声音
