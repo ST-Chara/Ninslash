@@ -1,5 +1,5 @@
 Import("configure.lua")
-Import("other/sdl2/sdl2.lua")
+Import("other/sdl3/sdl3.lua")
 Import("other/freetype/freetype.lua")
 Import("other/glew/glew.lua")
 
@@ -10,7 +10,7 @@ config:Add(OptTestCompileC("stackprotector", "int main(){return 0;}", "-fstack-p
 config:Add(OptTestCompileC("minmacosxsdk", "int main(){return 0;}", "-mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"))
 config:Add(OptTestCompileC("macosxppc", "int main(){return 0;}", "-arch ppc"))
 config:Add(OptLibrary("zlib", "zlib.h", false))
-config:Add(SDL2.OptFind("sdl2", true))
+config:Add(SDL3.OptFind("sdl3", true))
 config:Add(FreeType.OptFind("freetype", true))
 config:Add(GLEW.OptFind("glew", true))
 config:Finalize("config.lua")
@@ -114,11 +114,11 @@ server_link_other = {}
 if family == "windows" then
 	if platform == "win32" then
 		table.insert(client_depends, CopyToDirectory(".", "other\\freetype\\windows\\lib32\\freetype.dll"))
-		table.insert(client_depends, CopyToDirectory(".", "other\\sdl2\\lib32\\SDL2.dll"))
+		table.insert(client_depends, CopyToDirectory(".", "other\\sdl3\\lib32\\SDL3.dll"))
 		table.insert(client_depends, CopyToDirectory(".", "other\\glew\\windows\\lib32\\glew32.dll"))
 	else
 		table.insert(client_depends, CopyToDirectory(".", "other\\freetype\\windows\\lib64\\freetype.dll"))
-		table.insert(client_depends, CopyToDirectory(".", "other\\sdl2\\lib64\\SDL2.dll"))
+		table.insert(client_depends, CopyToDirectory(".", "other\\sdl3\\lib64\\SDL3.dll"))
 		table.insert(client_depends, CopyToDirectory(".", "other\\glew\\windows\\lib64\\glew32.dll"))
 	end
 
@@ -236,7 +236,7 @@ function build(settings)
 	end
 
 	-- apply sdl settings
-	config.sdl2:Apply(client_settings)
+	config.sdl3:Apply(client_settings)
 	-- apply freetype settings
 	config.freetype:Apply(client_settings)
 	-- apply glew settings
