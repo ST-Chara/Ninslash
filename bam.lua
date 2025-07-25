@@ -15,12 +15,18 @@ config:Add(FreeType.OptFind("freetype", true))
 config:Add(GLEW.OptFind("glew", true))
 config:Finalize("config.lua")
 
+python_in_path = ExecuteSilent("python -V") == 0
+
 -- data compiler
-function Script(name)
+function Python(name)
 	if family == "windows" then
-		return str_replace(name, "/", "\\")
+		name = str_replace(name, "/", "\\")
+		if not python_in_path then
+			-- Python is usually registered for .py files in Windows
+			return name
+		end
 	end
-	return "python3 " .. name
+	return "python " .. name
 end
 
 function CHash(output, ...)
