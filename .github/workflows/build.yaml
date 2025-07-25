@@ -75,7 +75,7 @@ jobs:
     - name: Package Release
       if: contains(matrix.os, 'Windows')
       run: |
-        Compress-Archive -Path cfg/ data/ ninslash ninslash_srv autoexec.cfg license.txt readme.md storage.cfg ${{ matrix.package-full-file }}
+        Compress-Archive -Path cfg/ data/ ninslash.exe ninslash_srv.exe autoexec.cfg freetype.dll SDL3.dll glew32.dll license.txt readme.md storage.cfg ${{ matrix.package-full-file }}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
