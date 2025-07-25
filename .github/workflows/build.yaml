@@ -77,8 +77,8 @@ jobs:
       if: contains(matrix.os, 'Windows')
       run: |
         mkdir ${{ matrix.package-full-file }}
-        xcopy cfg/ ${{ matrix.package-full-file }} /E /C
-        xcopy data/ ${{ matrix.package-full-file }} /E /C
+        xcopy cfg ${{ matrix.package-full-file }} /E /C
+        xcopy data ${{ matrix.package-full-file }} /E /C
         copy ninslash.exe ${{ matrix.package-full-file }}
         copy ninslash_srv.exe ${{ matrix.package-full-file }}
         copy autoexec.cfg ${{ matrix.package-full-file }}
