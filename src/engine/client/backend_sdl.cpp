@@ -882,10 +882,11 @@ int CGraphicsBackend_SDL_OpenGL::Init(const char *pName, int *Width, int *Height
 	// set screen
 	SDL_Rect ScreenPos;
 	int NumScreens = GetNumScreens();
+	SDL_GetDisplays(&NumScreens);
 	if(NumScreens > 0)
 	{
-		*pScreen = clamp(*pScreen, 0, NumScreens-1);
-		if(SDL_GetDisplayBounds(*pScreen, &ScreenPos) != 0)
+		*pScreen = DisplayIDFromIndex(*pScreen);
+		if(!SDL_GetDisplayBounds(*pScreen, &ScreenPos))
 		{
 			dbg_msg("gfx", "unable to retrieve screen information: %s", SDL_GetError());
 			return -1;
@@ -896,9 +897,8 @@ int CGraphicsBackend_SDL_OpenGL::Init(const char *pName, int *Width, int *Height
 		dbg_msg("gfx", "unable to retrieve number of screens: %s", SDL_GetError());
 		return -1;
 	}
-	SDL_DisplayID DisplayID = DisplayIDFromIndex(*pScreen);
 
-	const SDL_DisplayMode *pDisplayMode = SDL_GetDesktopDisplayMode(DisplayID);
+	const SDL_DisplayMode *pDisplayMode = SDL_GetDesktopDisplayMode(*pScreen);
 	// store desktop resolution for settings reset button
 	if(!pDisplayMode)
 	{
