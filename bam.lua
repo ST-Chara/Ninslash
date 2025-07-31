@@ -120,11 +120,11 @@ server_link_other = {}
 if family == "windows" then
 	if platform == "win32" then
 		table.insert(client_depends, CopyToDirectory(".", "other\\freetype\\windows\\lib32\\freetype.dll"))
-		table.insert(client_depends, CopyToDirectory(".", "other\\sdl3\\lib32\\SDL3.dll"))
+		table.insert(client_depends, CopyToDirectory(".", "other\\sdl3\\windows\\lib32\\SDL3.dll"))
 		table.insert(client_depends, CopyToDirectory(".", "other\\glew\\windows\\lib32\\glew32.dll"))
 	else
 		table.insert(client_depends, CopyToDirectory(".", "other\\freetype\\windows\\lib64\\freetype.dll"))
-		table.insert(client_depends, CopyToDirectory(".", "other\\sdl3\\lib64\\SDL3.dll"))
+		table.insert(client_depends, CopyToDirectory(".", "other\\sdl3\\windows\\lib64\\SDL3.dll"))
 		table.insert(client_depends, CopyToDirectory(".", "other\\glew\\windows\\lib64\\glew32.dll"))
 	end
 
